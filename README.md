@@ -4,6 +4,8 @@
 
 **Currently runs perfectly on Linux and Windows**
 
+To directly run the app, download from Releases section
+
 To run the app in Debug Mode, simply run the below command
 ```shell
 flutter run
