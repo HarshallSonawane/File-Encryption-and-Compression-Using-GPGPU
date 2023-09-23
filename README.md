@@ -21,7 +21,7 @@ For Linux
 flutter build linux --release
 ```
 
-Copy the **get-gpu-info.sh** and **ffi_lib** directory present inside **lib** to the **release/bundle/** directory and then run the executable
+Copy the **get-gpu-info.sh** and **ffi_lib** directory present inside **lib** to the **build/linux/x64/release/bundle/** directory and then run the executable
 
 
 ![Screenshot 2023-09-23 121813](https://github.com/AtharvNatu/Flutter-GPU-Detection/assets/66716779/b8ff8e60-642a-41a1-8bd1-a08cac3b62f8)
