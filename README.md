@@ -2,7 +2,9 @@
 Cross-Platform Flutter Desktop App For Detecting GPUs
 
 To run the app in Debug Mode, simply run the below command
-'''flutter run'''
+```shell
+flutter run
+```
 
 ![Screenshot 2023-09-23 121813](https://github.com/AtharvNatu/Flutter-GPU-Detection/assets/66716779/b8ff8e60-642a-41a1-8bd1-a08cac3b62f8)
 
