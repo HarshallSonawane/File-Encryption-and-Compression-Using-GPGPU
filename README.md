@@ -1,6 +1,6 @@
 # Flutter-GPU-Detection
 
-## Cross-Platform Flutter Desktop App For Detecting GPUs
+## Cross-Platform Flutter Desktop App For Detecting GPUs ##
 
 ### Currently runs perfectly on Linux and Windows ###
 
