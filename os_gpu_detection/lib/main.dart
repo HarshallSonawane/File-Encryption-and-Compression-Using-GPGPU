@@ -7,6 +7,7 @@ import "package:logger/logger.dart";
 import "package:flutter_window_close/flutter_window_close.dart";
 import "package:path/path.dart" as path;
 import "gpu_info.dart";
+import 'FilePick.dart';
 
 int gpuCount = 0;
 List<String> gpuList = [];
@@ -136,89 +137,168 @@ class GPUList extends StatelessWidget {
         title: const Text(appName),
       ),
       body: Center(
-          child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          for (var i = 0; i < gpuList.length; i++)
-            Card(
-              elevation: 10,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Text(
-                      gpuList.elementAt(i),
-                      style: const TextStyle(
-                        fontFamily: "Cascadia Code",
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+  child: Row(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      for (var i = 0; i < gpuList.length; i++)
+        Card(
+          elevation: 10,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: GestureDetector(
+              onTap: () {
+                // Define what you want to happen when the card is clicked.
+                // For example, you can navigate to a new screen or perform some action.
+                print("Card Clicked!");
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    gpuList.elementAt(i),
+                    style: const TextStyle(
+                      fontFamily: "Cascadia Code",
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
-                    const SizedBox(height: 10),
-                    if (gpuList[i].contains("NVIDIA"))
-                      Image.asset(
+                  ),
+                  const SizedBox(height: 10),
+                  if (gpuList[i].contains("NVIDIA"))
+                    GestureDetector(
+                      onTap: () {
+                         Navigator.of(context).push(
+                          MaterialPageRoute(
+                            // ignore: prefer_const_constructors
+                            builder: (context) => FilePick(
+                              title: "CUDA",
+                              imagePath: 'images/nvidia.png',
+                              description: "CUDA clicked",
+                            ),
+                          ),
+                        );
+                        print("CUDA Clicked!");
+                      },
+                      child: Image.asset(
                         'images/nvidia.png',
                         height: 150,
                         width: 150,
                       ),
-                    if (gpuList[i].contains("NVIDIA"))
-                      const SizedBox(height: 10),
-                    if (gpuList[i].contains("NVIDIA"))
-                      const Text(
+                    ),
+                  if (gpuList[i].contains("NVIDIA"))
+                    const SizedBox(height: 10),
+                  if (gpuList[i].contains("NVIDIA"))
+                    GestureDetector(
+                      onTap: () {
+                        // Define what you want to happen when the "CUDA" widget is clicked.
+                        // For example, you can navigate to a new screen or perform some action.
+                        print("CUDA Clicked!");
+                      },
+                      child: const Text(
                         "CUDA",
                         style: TextStyle(
-                            fontFamily: "Cascadia Code",
-                            fontSize: 20,
-                            color: Color.fromARGB(255, 118, 185, 0),
-                            fontWeight: FontWeight.w500),
+                          fontFamily: "Cascadia Code",
+                          fontSize: 20,
+                          color: Color.fromARGB(255, 118, 185, 0),
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    if (gpuList[i].contains("AMD"))
-                      Image.asset(
+                    ),
+                  if (gpuList[i].contains("AMD"))
+                    GestureDetector(
+                      onTap: () {
+                         Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => HomeScreen(
+                              // title: "AMD",
+                              // imagePath: 'images/amd.png',
+                              // description: "AMD",
+                            ),
+                          ),
+                        );
+                        //print("AMD Clicked!");
+                      },
+                      child: Image.asset(
                         'images/amd.png',
                         height: 150,
                         width: 150,
                       ),
-                    if (gpuList[i].contains("AMD")) const SizedBox(height: 10),
-                    if (gpuList[i].contains("AMD"))
-                      const Text(
+                    ),
+                  if (gpuList[i].contains("AMD"))
+                    const SizedBox(height: 10),
+                  if (gpuList[i].contains("AMD"))
+                    GestureDetector(
+                      onTap: () {
+                        // Define what you want to happen when the "OpenCL" widget is clicked.
+                        // For example, you can navigate to a new screen or perform some action.
+                        print("OpenCL Clicked!");
+                      },
+                      child: const Text(
                         "OpenCL",
                         style: TextStyle(
-                            fontFamily: "Cascadia Code",
-                            fontSize: 20,
-                            color: Colors.deepOrange,
-                            fontWeight: FontWeight.w500),
+                          fontFamily: "Cascadia Code",
+                          fontSize: 20,
+                          color: Colors.deepOrange,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    if (gpuList[i].contains("Intel"))
-                      Image.asset(
+                    ),
+                  if (gpuList[i].contains("Intel"))
+                    GestureDetector(
+                      onTap: () {
+                         Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => HomeScreen(
+                              // title: "Intel",
+                              // imagePath: 'images/intel.png',
+                              // description: "Intel",
+                            ),
+                          ),
+                        );
+                        print("Intel Clicked!");
+                      },
+                      child: Image.asset(
                         'images/intel.png',
                         height: 150,
                         width: 150,
                       ),
-                    if (gpuList[i].contains("Intel"))
-                      const SizedBox(height: 10),
-                    if (gpuList[i].contains("Intel"))
-                      const Text(
+                    ),
+                  if (gpuList[i].contains("Intel"))
+                    const SizedBox(height: 10),
+                  if (gpuList[i].contains("Intel"))
+                    GestureDetector(
+                      onTap: () {
+                        // Define what you want to happen when the "OpenCL" widget is clicked.
+                        // For example, you can navigate to a new screen or perform some action.
+                        print("OpenCL Clicked!");
+                      },
+                      child: const Text(
                         "OpenCL",
                         style: TextStyle(
-                            fontFamily: "Cascadia Code",
-                            fontSize: 20,
-                            color: Colors.deepOrange,
-                            fontWeight: FontWeight.w500),
+                          fontFamily: "Cascadia Code",
+                          fontSize: 20,
+                          color: Colors.deepOrange,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                  ],
-                ),
+                    ),
+                ],
               ),
             ),
-        ],
-      )),
+          ),
+        ),
+    ],
+  ),
+)
+
     );
   }
 }
+
+
 
 showAlertDialog(BuildContext context) {
   Widget okButton = ElevatedButton(

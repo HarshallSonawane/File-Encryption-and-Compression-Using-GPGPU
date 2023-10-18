@@ -46,6 +46,7 @@ dependencies:
   process_run: ^0.13.1
   window_manager: ^0.3.6
   flutter_window_close: ^0.2.2
+  file_picker: ^6.0.0
 
 dev_dependencies:
   flutter_test:
