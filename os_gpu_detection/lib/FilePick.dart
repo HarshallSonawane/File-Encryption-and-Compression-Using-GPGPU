@@ -9,12 +9,14 @@ class FilePick extends StatefulWidget {
   final String title;
   final String imagePath;
   final String description;
+  final String gpu;
   
 
   FilePick({
     required this.title,
     required this.imagePath,
     required this.description,
+    required this.gpu
   });
   
   @override
@@ -31,6 +33,7 @@ class ChooseFile extends State<FilePick> {
   late String title;
   late String imagePath;
   late String description;
+  late String gpu;
 
   
   @override
@@ -39,12 +42,14 @@ class ChooseFile extends State<FilePick> {
     title = widget.title;
     imagePath = widget.imagePath;
     description = widget.description;
+    gpu = widget.gpu;
   }
 
   String fileExt = "";
   String selectedFileName = "";
   TextEditingController keyController = TextEditingController();
   String submittedKey = "";
+  String filePath = "";
 
 
 
@@ -69,6 +74,7 @@ class ChooseFile extends State<FilePick> {
       setState(() {
         selectedFileName = result.files.first.name ?? "";
         fileExt = result.files.first.extension ?? "";
+        filePath = result.files.first.path??""; 
       });
     }
   }
@@ -118,6 +124,10 @@ class ChooseFile extends State<FilePick> {
             ),
             Text(
               "Extension: " + fileExt,
+              style: TextStyle(fontSize: 18),
+            ),
+             Text(
+              "Path: " + filePath,
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 20),

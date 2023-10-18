@@ -1,6 +1,7 @@
 import "dart:io";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
+import 'package:os_gpu_detection/UserChoice.dart';
 import "dart:ffi" as dart_ffi;
 import "package:window_manager/window_manager.dart";
 import "package:logger/logger.dart";
@@ -8,6 +9,7 @@ import "package:flutter_window_close/flutter_window_close.dart";
 import "package:path/path.dart" as path;
 import "gpu_info.dart";
 import 'FilePick.dart';
+import 'UserChoice.dart';
 
 int gpuCount = 0;
 List<String> gpuList = [];
@@ -115,7 +117,7 @@ class HomeScreen extends StatelessWidget {
                     fontWeight: FontWeight.w500),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30))),
-            label: const Text("Check GPU"),
+            label: const Text("Select GPU"),
             icon: Image.asset("images/search.png"),
             onPressed: () {
               showAlertDialog(context);
@@ -151,8 +153,6 @@ class GPUList extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             child: GestureDetector(
               onTap: () {
-                // Define what you want to happen when the card is clicked.
-                // For example, you can navigate to a new screen or perform some action.
                 print("Card Clicked!");
               },
               child: Column(
@@ -173,14 +173,14 @@ class GPUList extends StatelessWidget {
                          Navigator.of(context).push(
                           MaterialPageRoute(
                             // ignore: prefer_const_constructors
-                            builder: (context) => FilePick(
-                              title: "CUDA",
+                            builder: (context) => UserChoice(
+                              title: "Nvidia",
                               imagePath: 'images/nvidia.png',
-                              description: "CUDA clicked",
+                              description: "You have Nvidia",
                             ),
                           ),
                         );
-                        print("CUDA Clicked!");
+                        print("Nvidia Clicked!");
                       },
                       child: Image.asset(
                         'images/nvidia.png',
@@ -193,9 +193,17 @@ class GPUList extends StatelessWidget {
                   if (gpuList[i].contains("NVIDIA"))
                     GestureDetector(
                       onTap: () {
-                        // Define what you want to happen when the "CUDA" widget is clicked.
-                        // For example, you can navigate to a new screen or perform some action.
-                        print("CUDA Clicked!");
+                         Navigator.of(context).push(
+                          MaterialPageRoute(
+                            // ignore: prefer_const_constructors
+                            builder: (context) => UserChoice(
+                              title: "Nvidia",
+                              imagePath: 'images/nvidia.png',
+                              description: "You have Nvidia",
+                            ),
+                          ),
+                        );
+                        print("Nvidia Clicked!");
                       },
                       child: const Text(
                         "CUDA",
@@ -209,17 +217,18 @@ class GPUList extends StatelessWidget {
                     ),
                   if (gpuList[i].contains("AMD"))
                     GestureDetector(
-                      onTap: () {
+                       onTap: () {
                          Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => HomeScreen(
-                              // title: "AMD",
-                              // imagePath: 'images/amd.png',
-                              // description: "AMD",
+                            // ignore: prefer_const_constructors
+                            builder: (context) => UserChoice(
+                              title: "AMD",
+                              imagePath: 'images/amd.png',
+                              description: "You have AMD",
                             ),
                           ),
                         );
-                        //print("AMD Clicked!");
+                        print("AMD Clicked!");
                       },
                       child: Image.asset(
                         'images/amd.png',
@@ -231,10 +240,18 @@ class GPUList extends StatelessWidget {
                     const SizedBox(height: 10),
                   if (gpuList[i].contains("AMD"))
                     GestureDetector(
-                      onTap: () {
-                        // Define what you want to happen when the "OpenCL" widget is clicked.
-                        // For example, you can navigate to a new screen or perform some action.
-                        print("OpenCL Clicked!");
+                          onTap: () {
+                         Navigator.of(context).push(
+                          MaterialPageRoute(
+                            // ignore: prefer_const_constructors
+                            builder: (context) => UserChoice(
+                              title: "AMD",
+                              imagePath: 'images/amd.png',
+                              description: "You have AMD",
+                            ),
+                          ),
+                        );
+                        print("AMD Clicked!");
                       },
                       child: const Text(
                         "OpenCL",
@@ -251,10 +268,11 @@ class GPUList extends StatelessWidget {
                       onTap: () {
                          Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => HomeScreen(
-                              // title: "Intel",
-                              // imagePath: 'images/intel.png',
-                              // description: "Intel",
+                            // ignore: prefer_const_constructors
+                            builder: (context) => UserChoice(
+                              title: "Intel",
+                              imagePath: 'images/intel.png',
+                              description: "You have Intel",
                             ),
                           ),
                         );
@@ -270,10 +288,18 @@ class GPUList extends StatelessWidget {
                     const SizedBox(height: 10),
                   if (gpuList[i].contains("Intel"))
                     GestureDetector(
-                      onTap: () {
-                        // Define what you want to happen when the "OpenCL" widget is clicked.
-                        // For example, you can navigate to a new screen or perform some action.
-                        print("OpenCL Clicked!");
+                       onTap: () {
+                         Navigator.of(context).push(
+                          MaterialPageRoute(
+                            // ignore: prefer_const_constructors
+                            builder: (context) => UserChoice(
+                              title: "Intel",
+                              imagePath: 'images/intel.png',
+                              description: "You have Intel",
+                            ),
+                          ),
+                        );
+                        print("Intel Clicked!");
                       },
                       child: const Text(
                         "OpenCL",
