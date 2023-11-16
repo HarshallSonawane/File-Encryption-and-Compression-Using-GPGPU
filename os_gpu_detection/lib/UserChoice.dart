@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:os_gpu_detection/FilePick.dart';
+import 'package:os_gpu_detection/FilePickLiveMode.dart';
+
+import 'FilePickBenchMark.dart';
 
 
 class UserChoice extends StatelessWidget {
@@ -15,6 +17,22 @@ class UserChoice extends StatelessWidget {
 
  @override
   Widget build(BuildContext context) {
+    const sizedBox = SizedBox(
+                  width: 300,
+                  height: 100,
+            
+                  child: Card(
+                    color: Colors.blue,
+                    child: Center(child: Text('Secure File',
+                                  style: const TextStyle(
+                                    fontFamily: "Cascadia Code",
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  )
+                                  )),
+                  ),
+    );
     return Scaffold(
         appBar: AppBar(title: Text('User Choice')
         
@@ -28,7 +46,7 @@ class UserChoice extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => FilePick(
+                      builder: (context) => FilePickBench(
                        title: "Benchmarking",
                        gpu: this.title,
                        imagePath: this.imagePath,
@@ -38,11 +56,20 @@ class UserChoice extends StatelessWidget {
                   );
                 },
                 child: SizedBox(
-                  width: 200,
+                  width: 300,
                   height: 100,
                   child: Card(
-                    color: Colors.blue,
-                    child: Center(child: Text('Benchmarking')),
+                    color: Colors.green,
+                    child: Center(child: Text('Benchmarking',
+                     style: const TextStyle(
+                                    fontFamily: "Cascadia Code",
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  )
+                    )
+                    
+                    ),
                   ),
                 ),
               ),
@@ -50,8 +77,8 @@ class UserChoice extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => FilePick(
-                       title: "Live Work",
+                      builder: (context) => FilePickLive(
+                       title: "Secure File",
                        gpu: this.title,
                        imagePath: this.imagePath,
                        description: this.description,
@@ -59,14 +86,7 @@ class UserChoice extends StatelessWidget {
                     ),
                   );
                 },
-                child: SizedBox(
-                  width: 200,
-                  height: 100,
-                  child: Card(
-                    color: Colors.green,
-                    child: Center(child: Text('Live Work')),
-                  ),
-                ),
+                child: sizedBox,
               ),
             ],
           ),

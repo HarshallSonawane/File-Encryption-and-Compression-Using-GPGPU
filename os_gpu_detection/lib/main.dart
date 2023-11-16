@@ -8,7 +8,7 @@ import "package:logger/logger.dart";
 import "package:flutter_window_close/flutter_window_close.dart";
 import "package:path/path.dart" as path;
 import "gpu_info.dart";
-import 'FilePick.dart';
+import 'FilePickLiveMode.dart';
 import 'UserChoice.dart';
 
 int gpuCount = 0;
