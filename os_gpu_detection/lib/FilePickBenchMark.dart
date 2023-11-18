@@ -1,5 +1,4 @@
 
-
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 
@@ -10,12 +9,15 @@ class FilePickBench extends StatefulWidget {
   final String imagePath;
   final String description;
   final String gpu;
+  
 
   FilePickBench({
     required this.title,
     required this.imagePath,
     required this.description,
-    required this.gpu,
+    required this.gpu, 
+    required String gpuName, 
+    required int gpuoffest,
   });
 
   @override
@@ -88,14 +90,14 @@ class ChooseFile extends State<FilePickBench> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text("ERROR ⚠️"),
-              content: Text("Please select an appropriate file."),
+              title: const Text("ERROR ⚠️"),
+              content: const Text("Please select an appropriate file."),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text("OK"),
+                  child: const Text("OK"),
                 ),
               ],
             );
@@ -136,11 +138,13 @@ class ChooseFile extends State<FilePickBench> {
 
   @override
   Widget build(BuildContext context) {
+    Color benchmarkingCardColor =
+        description.toLowerCase() == 'nvidia' ? Colors.green : Colors.deepOrange;
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'GPGPU Based File Encryption'),
-          backgroundColor: Colors.green,
+          backgroundColor: benchmarkingCardColor,
       ),
       body: Center(
         child: Column(
@@ -150,7 +154,7 @@ class ChooseFile extends State<FilePickBench> {
               onPressed: _openFilePicker,
               child: Text('Select File'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
+                backgroundColor: benchmarkingCardColor,
                 fixedSize: const Size(180, 60),
                 textStyle: const TextStyle(
                   fontFamily: "Cascadia Code",
@@ -191,7 +195,7 @@ class ChooseFile extends State<FilePickBench> {
               },
               child: const Text('Benchmark'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
+                backgroundColor: benchmarkingCardColor,
                 fixedSize: const Size(180, 60),
                 textStyle: const TextStyle(
                   fontFamily: "Cascadia Code",

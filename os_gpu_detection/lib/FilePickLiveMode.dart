@@ -14,7 +14,7 @@ class FilePickLive extends StatefulWidget {
     required this.title,
     required this.imagePath,
     required this.description,
-    required this.gpu,
+    required this.gpu, required String gpuName, required int gpuoffest,
   });
 
   @override
