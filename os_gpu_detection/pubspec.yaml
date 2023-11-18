@@ -49,6 +49,7 @@ dependencies:
   flutter_window_close: ^0.2.2
   file_picker: ^6.0.0
   fl_chart: ^0.64.0
+  path: ^1.8.3
 
 dev_dependencies:
   flutter_test:

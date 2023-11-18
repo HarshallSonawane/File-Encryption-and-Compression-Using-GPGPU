@@ -7,12 +7,14 @@ class BenchMark_Results extends StatelessWidget {
   final String fileExt;
   final String filePath;
   final String submittedKey;
+  final String outputFilePath;
 
   BenchMark_Results({
     required this.selectedFileName,
     required this.fileExt,
     required this.filePath,
-    required this.submittedKey,
+    required this.submittedKey, 
+    required this.outputFilePath,
   });
 
   @override
@@ -29,6 +31,7 @@ class BenchMark_Results extends StatelessWidget {
             Text('File Extension: $fileExt'),
             Text('File Path: $filePath'),
             Text('Submitted Key: $submittedKey'),
+            Text('Output Path: $outputFilePath' )
           ],
         ),
       ),
@@ -45,12 +48,14 @@ class BenchMark_Results extends StatelessWidget {
 //   final String fileExt;
 //   final String filePath;
 //   final String submittedKey;
+//   final String outputFilePath;
 
 //   BenchMark_Results({
 //     required this.selectedFileName,
 //     required this.fileExt,
 //     required this.filePath,
 //     required this.submittedKey,
+//     required this.outputFilePath,
 //   });
 
 //   @override

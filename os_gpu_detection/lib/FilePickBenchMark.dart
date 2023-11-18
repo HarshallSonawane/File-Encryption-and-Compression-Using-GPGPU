@@ -123,6 +123,7 @@ class ChooseFile extends State<FilePickBench> {
               fileExt: fileExt,
               filePath: filePath,
               submittedKey: submittedKey,
+              outputFilePath: "none",
             ),
           ),
         );
