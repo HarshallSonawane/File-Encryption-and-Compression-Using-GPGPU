@@ -5,6 +5,9 @@ import 'package:file_picker/file_picker.dart';
 import 'benchmark_results.dart';
 import "lib.dart";
 
+// late int isClicked = 0;
+// late String btnTxt = "Select File";
+
 class FilePickLive extends StatefulWidget {
   final String title;
   final String imagePath;
@@ -29,6 +32,7 @@ class ChooseFile extends State<FilePickLive> {
   late String imagePath;
   late String description;
   late String gpu;
+  
 
   @override
   void initState() {
@@ -110,6 +114,7 @@ class ChooseFile extends State<FilePickLive> {
       }
     }
 
+    
     _trimPath(outputFilePath);
   }
 
@@ -171,6 +176,15 @@ class ChooseFile extends State<FilePickLive> {
         );
       }
     }
+
+    // isClicked = 1;
+    // if(isClicked == 1){
+    //   btnTxt = "Output Path";
+    //   isClicked = 0;
+    // }
+    // if(isClicked == 0){
+    //   btnTxt = "Select File";
+    // }
   }
 
   void _submitKey() {
@@ -248,6 +262,7 @@ class ChooseFile extends State<FilePickLive> {
     super.dispose();
   }
 
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -294,33 +309,38 @@ class ChooseFile extends State<FilePickLive> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
-            Text(
-              "Output Path: " + trimmedPath,
-              style: TextStyle(fontSize: 18),
-            ),
-            Text(
-              "Mode: " + title,
-              style: TextStyle(fontSize: 18),
-            ),
-            Text(
-              selectedFileName,
-              style: TextStyle(fontSize: 18),
-            ),
-            Text(
-              "Extension: " + fileExt,
-              style: TextStyle(fontSize: 18),
-            ),
-            Text(
-              "Path: " + filePath,
-              style: TextStyle(fontSize: 18),
-            ),
+
+            //  DEBUGGING
+            // ------------------------------------------------------------------
+            //SizedBox(height: 20),
+            // Text(
+            //   "Output Path: " + trimmedPath,
+            //   style: TextStyle(fontSize: 18),
+            // ),
+            // Text(
+            //   "Mode: " + title,
+            //   style: TextStyle(fontSize: 18),
+            // ),
+            // Text(
+            //   selectedFileName,
+            //   style: TextStyle(fontSize: 18),
+            // ),
+            // Text(
+            //   "Extension: " + fileExt,
+            //   style: TextStyle(fontSize: 18),
+            // ),
+            // Text(
+            //   "Path: " + filePath,
+            //   style: TextStyle(fontSize: 18),
+            // ),
             SizedBox(height: 20),
             Text(
               'Enter Password:',
               style: TextStyle(fontSize: 18),
             ),
-            SizedBox(height: 10),
+            // SizedBox(height: 10),
+            // ------------------------------------------------------------------
+
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 300, vertical: 20),
@@ -359,10 +379,13 @@ class ChooseFile extends State<FilePickLive> {
               ),
             ),
             SizedBox(height: 20),
-            Text(
-              submittedKey,
-              style: TextStyle(fontSize: 18),
-            ),
+            
+            
+            //DEBUG
+            // Text(
+            //   submittedKey,
+            //   style: TextStyle(fontSize: 18),
+            // ),
           ],
         ),
       ),

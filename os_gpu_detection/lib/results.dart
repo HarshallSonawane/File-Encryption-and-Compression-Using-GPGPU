@@ -2,6 +2,9 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+double timeTakenCPU = 400.51;
+double timeTakenGPU = 20.32;
+
 class _BarChart extends StatelessWidget {
   const _BarChart();
 
@@ -15,13 +18,13 @@ class _BarChart extends StatelessWidget {
         barGroups: barGroups,
         gridData: const FlGridData(show: true),
         alignment: BarChartAlignment.spaceAround,
-        maxY: 20,
+        maxY: 500,
       ),
     );
   }
 
   BarTouchData get barTouchData => BarTouchData(
-        enabled: false,
+        enabled: true,
         touchTooltipData: BarTouchTooltipData(
           tooltipBgColor: Colors.transparent,
           tooltipPadding: EdgeInsets.zero,
@@ -35,7 +38,7 @@ class _BarChart extends StatelessWidget {
             return BarTooltipItem(
               rod.toY.round().toString(),
               const TextStyle(
-                color: Colors.cyan,
+                color: Colors.black,
                 fontWeight: FontWeight.bold,
               ),
             );
@@ -45,18 +48,19 @@ class _BarChart extends StatelessWidget {
 
   Widget getTitles(double value, TitleMeta meta) {
     final style = TextStyle(
-      color: Colors.blue,
+      fontFamily: "Cascadia Code",
+      color: Colors.black,
       fontWeight: FontWeight.bold,
-      fontSize: 14,
+      fontSize: 15,
     );
     String text;
-    String a = "aa";
+    
     switch (value.toInt()) {
       case 0:
-        text = a;
+        text = 'CPU';
         break;
       case 1:
-        text = 'Te';
+        text = 'GPU';
         break;
       default:
         text = '';
@@ -78,58 +82,41 @@ class _BarChart extends StatelessWidget {
             getTitlesWidget: getTitles,
           ),
         ),
-    //   leftTitles: AxisTitles(
-    //     showTitles: true,
-    //     getTextStyles: (value) => const TextStyle(color: Colors.blue),
-    //     margin: 8,
-    //     reservedSize: 30,
-    //     interval: 5, // Customize the interval between left titles
-    //     getTitles: (double value) {
-    //     // Customize the left titles based on your data
-    //       return value.toInt().toString();
-    //   },
-    // ),
         topTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
+          sideTitles: SideTitles(showTitles: true),
+         
         ),
         rightTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
-      );
+  );
 
   FlBorderData get borderData => FlBorderData(
         show: false,
-      );
-
-  LinearGradient get _barsGradient => LinearGradient(
-        colors: [
-          Colors.blue,
-          Colors.cyan,
-        ],
-        begin: Alignment.bottomCenter,
-        end: Alignment.topCenter,
-      );
+  );
 
   List<BarChartGroupData> get barGroups => [
         BarChartGroupData(
           x: 0,
           barRods: [
             BarChartRodData(
-              toY: 8,
-              gradient: _barsGradient,
+              toY: timeTakenCPU,
+              color: Colors.deepOrange,
+              width: 17,
             )
           ],
-          showingTooltipIndicators: [0],
+          showingTooltipIndicators: [1],
         ),
         BarChartGroupData(
           x: 1,
           barRods: [
             BarChartRodData(
-              toY: 10,
-              gradient: _barsGradient,
+              toY: timeTakenGPU,
+              color: Colors.green,
+              width: 17
             )
           ],
-          showingTooltipIndicators: [0],
+          showingTooltipIndicators: [2],
         ),
         
       ];
@@ -139,75 +126,147 @@ class _BarChartContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 700, // Set your desired width
-      height: 500, // Set your desired height
+      width: 800, 
+      height: 700, 
       decoration: BoxDecoration(
-        color: Colors.white, // Set your desired background color
-        borderRadius: BorderRadius.circular(10), // Optional: Set border radius
+        color: Colors.white, 
+        borderRadius: BorderRadius.circular(5), 
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 2,
+            spreadRadius: 5,
             blurRadius: 5,
             offset: Offset(0, 3),
           ),
-        ], // Optional: Add shadow
+        ], 
       ),
       child: _BarChart(),
+      
     );
-
   }
 }
 
+class BarChartt extends StatefulWidget {
 
-class BarChartSample3 extends StatefulWidget {
-  const BarChartSample3({super.key});
+
+  const BarChartt({super.key});
 
   @override
-  State<StatefulWidget> createState() => BarChartSample3State();
+  State<StatefulWidget> createState() => PlotCharts();
 }
 
-class BarChartSample3State extends State<BarChartSample3> {
+class PlotCharts extends State<BarChartt> {
+  
+  int touchedIndex = -1;
+  
+  List<PieChartSectionData> showingSections() {
+    return List.generate(2, (i) {
+      final isTouched = i == touchedIndex;
+      final fontSize = isTouched ? 25.0 : 16.0;
+      final radius = isTouched ? 60.0 : 50.0;
+      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+     
+      switch (i) {
+        case 0:
+          return PieChartSectionData(
+            color: Colors.deepOrange,
+            value: timeTakenCPU,
+            title: '$timeTakenCPU ms',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+              shadows: shadows,
+            ),
+          );
+        case 1:
+          return PieChartSectionData(
+            color: Colors.green,
+            value: timeTakenGPU,
+            title: '$timeTakenGPU ms',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+              shadows: shadows,
+            ),
+          );
+        default:
+          throw Error();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+        return Scaffold(
       appBar: AppBar(
-        title: Text('Results'),
+        title: const Text('Results'),
       ),
-      body: Center(child: 
-      Row(
-        children: [
-          Container(
-             width: 700,
-            height: 500,
-            child: _BarChartContainer(),
+      body: 
+         Row(
+          children: <Widget>[
+            SizedBox(width: 10),
+            Container(
+              width: 1000,
+              height: 700,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: _BarChartContainer(),
+              ),
+            ),
+            SizedBox(width: 40), 
+             Container(
+              
+              width: 450,
+              height: 665, 
+              decoration: BoxDecoration(
+                color: Colors.white, 
+                borderRadius: BorderRadius.circular(10), 
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 5,
+                    offset: Offset(0, 3),
+                  ),
+                ], 
+              ),
+              
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: PieChart(
+                PieChartData(
+                  pieTouchData: PieTouchData(
+                    touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                      setState(() {
+                        if (!event.isInterestedForInteractions ||
+                            pieTouchResponse == null ||
+                            pieTouchResponse.touchedSection == null) {
+                          touchedIndex = -1;
+                          return;
+                        }
+                        touchedIndex = pieTouchResponse
+                            .touchedSection!.touchedSectionIndex;
+                      });
+                    },
+                  ),
+                  borderData: FlBorderData(
+                    show: false,
+                  ),
+                  sectionsSpace: 0,
+                  centerSpaceRadius: 80,
+                  sections: showingSections(),
+                ),
+              ),
+              
           ),
-          // Expanded(
-          //   child: Padding(
-          //     padding: const EdgeInsets.all(16.0),
-          //     child: PieChart(
-          //       PieChartData(
-          //         sections: [
-          //           PieChartSectionData(
-          //             color: Colors.red,
-          //             value: 30,
-          //             title: 'A',
-          //           ),
-                    
-          //         PieChartSectionData(
-          //             color: Colors.green,
-          //             value: 40,
-          //             title: 'B',
-          //           ),
-                    
-          //         ],
-          //       ),
-          //     ),
-          //   ),
-          // ),
+        ),
       ],
-      ),
-      ),
-    );
+    ),  
+    ); 
   }
 }
+

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:os_gpu_detection/results.dart';
 import 'package:path/path.dart' as path;
 import 'package:file_picker/file_picker.dart';  
-import 'benchmark_results.dart';
 
 
 class FilePickBench extends StatefulWidget {
@@ -184,8 +183,7 @@ class ChooseFile extends State<FilePickBench> {
       if (title == "Benchmarking") {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => const BarChartSample3()
-            // builder: (context) => BenchMark_Results(
+            builder: (context) => const BarChartt()
             //   selectedFileName: selectedFileName,
             //   fileExt: fileExt,
             //   filePath: filePath,
@@ -217,6 +215,20 @@ class ChooseFile extends State<FilePickBench> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
            children: <Widget>[
+
+            
+            const Padding(
+            padding: EdgeInsets.all(25.0),
+            child: Text(
+              'CPU v/s GPU Performance Analysis',
+              style: TextStyle(
+                fontFamily: "Cascadia Code",
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+              ),
+            ),
+          ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -253,64 +265,71 @@ class ChooseFile extends State<FilePickBench> {
                     ),
                   ),
                 ),
-              ],
-            ),
-            SizedBox(height: 20),
-            Text(
-              "FileName: " +selectedFileName,
-              style: TextStyle(fontSize: 18),
-            ),
-            Text(
-              "Output Path: " +trimmedPath,
-              style: TextStyle(fontSize: 18),
-            ),
-            Text(
-              "Mode: " + title,
-              style: TextStyle(fontSize: 18),
-            ),
-            Text(
-              selectedFileName,
-              style: TextStyle(fontSize: 18),
-            ),
-            Text(
-              "Extension: " + fileExt,
-              style: TextStyle(fontSize: 18),
-            ),
-            Text(
-              "Path: " + filePath,
-              style: TextStyle(fontSize: 18),
-            ),
-            SizedBox(height: 20),
-            
-            SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {
-                _submitKey();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Entering Benchmarking Mode...'),
+                SizedBox(width: 20),
+                ElevatedButton(
+                onPressed: () {
+                  _submitKey();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Entering Benchmarking Mode...'),
+                    ),
+                  );
+                },
+                child: const Text('Benchmark'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: benchmarkingCardColor,
+                  fixedSize: const Size(180, 60),
+                  textStyle: const TextStyle(
+                    fontFamily: "Cascadia Code",
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
                   ),
-                );
-              },
-              child: const Text('Benchmark'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: benchmarkingCardColor,
-                fixedSize: const Size(180, 60),
-                textStyle: const TextStyle(
-                  fontFamily: "Cascadia Code",
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
                 ),
               ),
+              ],
             ),
-            SizedBox(height: 20),
-            Text(
-              submittedKey,
-              style: TextStyle(fontSize: 18),
-            ),
+
+
+            //DEBUG
+            // //---------------------------------------------------------
+            // SizedBox(height: 20),
+            // Text(
+            //   "FileName: " +selectedFileName,
+            //   style: TextStyle(fontSize: 18),
+            // ),
+            // Text(
+            //   "Output Path: " +trimmedPath,
+            //   style: TextStyle(fontSize: 18),
+            // ),
+            // Text(
+            //   "Mode: " + title,
+            //   style: TextStyle(fontSize: 18),
+            // ),
+            // Text(
+            //   selectedFileName,
+            //   style: TextStyle(fontSize: 18),
+            // ),
+            // Text(
+            //   "Extension: " + fileExt,
+            //   style: TextStyle(fontSize: 18),
+            // ),
+            // Text(
+            //   "Path: " + filePath,
+            //   style: TextStyle(fontSize: 18),
+            // ),
+            // SizedBox(height: 20),
+            // ---------------------------------------------------
+
+            
+           
+            // SizedBox(height: 20),
+            // Text(
+            //   submittedKey,
+            //   style: TextStyle(fontSize: 18),
+            // ),
           ],
         ),
       ),
