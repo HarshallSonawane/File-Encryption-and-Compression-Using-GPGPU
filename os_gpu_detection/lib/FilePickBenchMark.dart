@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:os_gpu_detection/pie_chart_sample3.dart';
 
 import 'benchmark_results.dart';
 
@@ -118,6 +119,7 @@ class ChooseFile extends State<FilePickBench> {
       if (title == "Benchmarking") {
         Navigator.of(context).push(
           MaterialPageRoute(
+            // builder: (context) => PieChartSample3()
             builder: (context) => BenchMark_Results(
               selectedFileName: selectedFileName,
               fileExt: fileExt,
@@ -209,6 +211,7 @@ class ChooseFile extends State<FilePickBench> {
               ),
             ),
             SizedBox(height: 20),
+            
             
           ],
         ),

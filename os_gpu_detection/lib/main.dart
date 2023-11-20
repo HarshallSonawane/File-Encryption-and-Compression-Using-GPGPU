@@ -8,8 +8,7 @@ import "package:logger/logger.dart";
 import "package:flutter_window_close/flutter_window_close.dart";
 import "package:path/path.dart" as path;
 import "gpu_info.dart";
-import 'FilePickLiveMode.dart';
-import 'UserChoice.dart';
+
 
 int gpuoffest=0;
 int gpuCount = 0;
@@ -97,37 +96,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// class HomeScreen extends StatelessWidget {
-//   const HomeScreen({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       alignment: Alignment.center,
-//       padding: const EdgeInsets.all(85.0),
-//       child: Column(
-//         children: [
-//           const Image(image: AssetImage("images/gpu.png")),
-//           ElevatedButton.icon(
-//             style: ElevatedButton.styleFrom(
-//                 fixedSize: const Size(180, 60),
-//                 textStyle: const TextStyle(
-//                     fontFamily: "Cascadia Code",
-//                     fontSize: 16,
-//                     fontWeight: FontWeight.w500),
-//                 shape: RoundedRectangleBorder(
-//                     borderRadius: BorderRadius.circular(30))),
-//             label: const Text("Select GPU"),
-//             icon: Image.asset("images/search.png"),
-//             onPressed: () {
-//               showAlertDialog(context);
-//             },
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
 
 class GPUList extends StatelessWidget {
   const GPUList({super.key});
@@ -337,35 +305,6 @@ class GPUList extends StatelessWidget {
   }
 }
 
-
-
-
-
-// showAlertDialog(BuildContext context) {
-//   Widget okButton = ElevatedButton(
-//     child: const Text("Ok"),
-//     onPressed: () {
-//       Navigator.of(context).pop();
-//       Navigator.of(context)
-//           .push(MaterialPageRoute(builder: (context) => const GPUList()));
-//     },
-//   );
-
-//   AlertDialog alert = AlertDialog(
-//     title: const Text("GPU Devices"),
-//     content: Text("We detected $gpuCount GPU(s) on your system"),
-//     actions: [
-//       okButton,
-//     ],
-//   );
-
-//   showDialog(
-//     context: context,
-//     builder: (BuildContext context) {
-//       return alert;
-//     },
-//   );
-// }
 
 void appExit() {
   if (Platform.isLinux) {
