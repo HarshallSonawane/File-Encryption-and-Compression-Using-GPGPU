@@ -1,21 +1,23 @@
-
+import 'package:ffi/ffi.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'benchmark_results.dart';
+import "lib.dart";
 
 class FilePickLive extends StatefulWidget {
   final String title;
   final String imagePath;
   final String description;
   final String gpu;
-  
 
   FilePickLive({
     required this.title,
     required this.imagePath,
     required this.description,
-    required this.gpu, required String gpuName, required int gpuoffest,
+    required this.gpu,
+    required String gpuName,
+    required int gpuoffest,
   });
 
   @override
@@ -38,15 +40,16 @@ class ChooseFile extends State<FilePickLive> {
   }
 
   List<String> allowedExtensions = [
-          'jpg',
-          'png',
-          'pdf',
-          'txt',
-          'mp4',
-          'mov',
-          'docx',
-          'heif',
-          'jpeg'
+    'jpg',
+    'png',
+    'pdf',
+    'txt',
+    'mp4',
+    'mov',
+    'docx',
+    'heif',
+    'jpeg',
+    'enc'
   ];
   String fileExt = "";
   String selectedFileName = "";
@@ -54,8 +57,7 @@ class ChooseFile extends State<FilePickLive> {
   String submittedKey = "";
   String filePath = "";
 
-
-  String outputFilePath = ""; 
+  String outputFilePath = "";
   String trimmedPath = "";
 
   void _selectPath() async {
@@ -64,6 +66,7 @@ class ChooseFile extends State<FilePickLive> {
       dialogTitle: 'Select Output Path',
       type: FileType.custom,
       allowedExtensions: [
+        'enc',
         'jpg',
         'png',
         'pdf',
@@ -72,12 +75,13 @@ class ChooseFile extends State<FilePickLive> {
         'mov',
         'docx',
         'heif',
-        'jpeg',
+        'jpeg'
       ],
     );
 
     if (result != null) {
-      String selectedExtension = result.files.first.extension?.toLowerCase() ?? "";
+      String selectedExtension =
+          result.files.first.extension?.toLowerCase() ?? "";
 
       if (allowedExtensions.contains(selectedExtension)) {
         setState(() {
@@ -110,23 +114,20 @@ class ChooseFile extends State<FilePickLive> {
   }
 
   void _trimPath(String fullPath) {
+    String pathWithoutPrefix = fullPath.replaceFirst("file:///", "");
+    String directory = path.dirname(pathWithoutPrefix);
+    String fileName = path.basename(pathWithoutPrefix);
 
-  String pathWithoutPrefix = fullPath.replaceFirst("file:///", "");
-  String directory = path.dirname(pathWithoutPrefix);
-  String fileName = path.basename(pathWithoutPrefix);
-
-  trimmedPath = path.join(directory, "");
-  print(trimmedPath);
-  
-}
-  
+    trimmedPath = path.join(directory, "");
+    print(trimmedPath);
+  }
 
   void _openFilePicker() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-      allowMultiple: false,
-      dialogTitle: 'Select a File you would like to Compress',
-      type: FileType.custom,
-      allowedExtensions: [
+        allowMultiple: false,
+        dialogTitle: 'Select A File You Would Like to Secure',
+        type: FileType.custom,
+        allowedExtensions: [
           'jpg',
           'png',
           'pdf',
@@ -135,11 +136,13 @@ class ChooseFile extends State<FilePickLive> {
           'mov',
           'docx',
           'heif',
-          'jpeg'
-    ]);
+          'jpeg',
+          'enc'
+        ]);
 
     if (result != null) {
-      String selectedExtension = result.files.first.extension?.toLowerCase() ?? "";
+      String selectedExtension =
+          result.files.first.extension?.toLowerCase() ?? "";
 
       if (allowedExtensions.contains(selectedExtension)) {
         setState(() {
@@ -176,23 +179,49 @@ class ChooseFile extends State<FilePickLive> {
         submittedKey = keyController.text;
       });
 
-      //FOR BENCHMARKING MODE ONLY!!!!!!!
-        if(title == "Benchmarking"){
-          Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => BenchMark_Results(
-                        selectedFileName: selectedFileName,
-                        fileExt: fileExt,
-                        filePath: filePath,
-                        submittedKey: submittedKey,
-                        outputFilePath: trimmedPath,
-                      ),
-                    ),
-          );
-        }
-       
-      }
-    else {
+      // final inputPath = filePath.toNativeUtf8();
+      // final outputPath = trimmedPath.toNativeUtf8();
+      // final password = submittedKey.toNativeUtf8();
+
+      // if (fileExt != "txt" && fileExt != "enc") {
+      //   aesCPUEncryptTime = double.parse(
+      //       aesCPUEncrypt(inputPath, outputPath, password).toStringAsFixed(2));
+      //   print("AES Encryption Time = $aesCPUEncryptTime ms");
+      // } else if (fileExt == "txt") {
+      //   aesCPUHuffmanEncryptTime = double.parse(
+      //       aesCPUHuffmanEncrypt(inputPath, outputPath, password)
+      //           .toStringAsFixed(2));
+      //   print("AES + Huffman Encryption Time = $aesCPUHuffmanEncryptTime ms");
+      // } else if (fileExt == "enc" && !selectedFileName.contains("txt.enc")) {
+      //   aesCPUDecryptTime = double.parse(
+      //       aesCPUDecrypt(inputPath, outputPath, password).toStringAsFixed(2));
+      //   print("AES Decryption Time = $aesCPUEncryptTime ms");
+      // } else if (fileExt == "enc" && selectedFileName.contains("txt.enc")) {
+      //   aesCPUHuffmanDecryptTime = double.parse(
+      //       aesCPUHuffmanDecrypt(inputPath, outputPath, password)
+      //           .toStringAsFixed(2));
+      //   print("AES + Huffman Decryption Time = $aesCPUHuffmanDecryptTime ms");
+      // }
+
+      // calloc.free(password);
+      // calloc.free(outputPath);
+      // calloc.free(inputPath);
+
+      // //FOR BENCHMARKING MODE ONLY!!!!!!!
+      //   if(title == "Benchmarking"){
+      //     Navigator.of(context).push(
+      //               MaterialPageRoute(
+      //                 builder: (context) => BenchMark_Results(
+      //                   selectedFileName: selectedFileName,
+      //                   fileExt: fileExt,
+      //                   filePath: filePath,
+      //                   submittedKey: submittedKey,
+      //                   outputFilePath: trimmedPath,
+      //                 ),
+      //               ),
+      //     );
+      //   }
+    } else {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -228,7 +257,7 @@ class ChooseFile extends State<FilePickLive> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-           children: <Widget>[
+          children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -249,7 +278,7 @@ class ChooseFile extends State<FilePickLive> {
                 ),
                 SizedBox(width: 20),
                 ElevatedButton(
-                  onPressed:_selectPath,
+                  onPressed: _selectPath,
                   child: Text('Output Path'),
                   style: ElevatedButton.styleFrom(
                     fixedSize: const Size(180, 60),
@@ -266,9 +295,8 @@ class ChooseFile extends State<FilePickLive> {
               ],
             ),
             SizedBox(height: 20),
-            
             Text(
-              "Output Path: " +trimmedPath,
+              "Output Path: " + trimmedPath,
               style: TextStyle(fontSize: 18),
             ),
             Text(
@@ -294,7 +322,8 @@ class ChooseFile extends State<FilePickLive> {
             ),
             SizedBox(height: 10),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 300, vertical: 20),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 300, vertical: 20),
               child: TextField(
                 controller: keyController,
                 decoration: const InputDecoration(

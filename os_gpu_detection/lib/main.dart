@@ -2,23 +2,22 @@ import "dart:io";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import 'package:os_gpu_detection/UserChoice.dart';
-import "dart:ffi" as dart_ffi;
+import "dart:ffi";
 import "package:window_manager/window_manager.dart";
 import "package:logger/logger.dart";
 import "package:flutter_window_close/flutter_window_close.dart";
 import "package:path/path.dart" as path;
 import "gpu_info.dart";
+import "dart:ui" as ui;
+import "lib.dart";
 
-
-int gpuoffest=0;
+int gpuoffest = 0;
 int gpuCount = 0;
 List<String> gpuList = [];
 var logger = Logger(
   printer: PrettyPrinter(),
 );
 const appName = "Data Compression and Encryption using GPGPU";
-typedef RunGPUScriptFunc = dart_ffi.Void Function();
-typedef RunGPUScript = void Function();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,11 +25,11 @@ void main() async {
 
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     WindowOptions windowOptions = const WindowOptions(
-      size: Size(1000, 600),
+      size: ui.Size(1000, 600),
       center: true,
       backgroundColor: Colors.transparent,
       skipTaskbar: false,
-      fullScreen: true,
+      fullScreen: false,
       windowButtonVisibility: true,
     );
     windowManager.waitUntilReadyToShow(windowOptions, () async {
@@ -38,24 +37,35 @@ void main() async {
       await windowManager.focus();
     });
 
+    // Linux GPU Detection
     if (Platform.isLinux) {
-      if (kDebugMode) {
-        final dynamicLib =
-            dart_ffi.DynamicLibrary.open("lib/ffi_lib/libGPUInfo.so");
-        final RunGPUScript runGPUScript = dynamicLib
-            .lookup<dart_ffi.NativeFunction<RunGPUScriptFunc>>("run_gpu_script")
-            .asFunction();
-        runGPUScript();
-      } else {
-        var libraryPath =
-            path.join(Directory.current.path, "ffi_lib", "libGPUInfo.so");
-        final dynamicLib = dart_ffi.DynamicLibrary.open(libraryPath);
-        final RunGPUScript runGPUScript = dynamicLib
-            .lookup<dart_ffi.NativeFunction<RunGPUScriptFunc>>("run_gpu_script")
-            .asFunction();
-        runGPUScript();
-      }
+      gpuInfoLibPath =
+          path.join(Directory.current.path, "ffi_lib", "libGPUInfo.so");
+      gpuInfoDynamicLib = DynamicLibrary.open(gpuInfoLibPath);
+      final RunGPUScript runGPUScript = gpuInfoDynamicLib
+          .lookup<NativeFunction<RunGPUScriptFunc>>("run_gpu_script")
+          .asFunction();
+      runGPUScript();
     }
+
+    // DCAEUG CPU
+    if (Platform.isWindows) {
+      cpuLibPath = path.join(Directory.current.path, "ffi_lib", "DCAEUG.dll");
+    } else if (Platform.isLinux) {
+      cpuLibPath = path.join(Directory.current.path, "ffi_lib", "libDCAEUG.so");
+    }
+
+    cpuDynamicLib = DynamicLibrary.open(cpuLibPath);
+
+    // DCAEUG Native Functions
+    aesCPUEncrypt = cpuDynamicLib
+        .lookupFunction<DartFunc, NativeFunc>('aes_cpu_encrypt_ffi');
+    aesCPUDecrypt = cpuDynamicLib
+        .lookupFunction<DartFunc, NativeFunc>('aes_cpu_decrypt_ffi');
+    aesCPUHuffmanEncrypt = cpuDynamicLib
+        .lookupFunction<DartFunc, NativeFunc>('aes_cpu_encrypt_huffman_ffi');
+    aesCPUHuffmanDecrypt = cpuDynamicLib
+        .lookupFunction<DartFunc, NativeFunc>('aes_cpu_decrypt_huffman_ffi');
   }
 
   FlutterWindowClose.setWindowShouldCloseHandler(() async {
@@ -96,7 +106,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
 class GPUList extends StatelessWidget {
   const GPUList({super.key});
 
@@ -107,16 +116,14 @@ class GPUList extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            
             const Text(
               "Select Your Preferred GPU",
               style: TextStyle(
                 fontFamily: "Cascadia Code",
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
               ),
             ),
-           
             SizedBox(height: 50),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -147,7 +154,6 @@ class GPUList extends StatelessWidget {
                             ),
                             const SizedBox(height: 10),
                             if (gpuList[i].contains("NVIDIA"))
-
                               GestureDetector(
                                 onTap: () {
                                   Navigator.of(context).push(
@@ -201,11 +207,10 @@ class GPUList extends StatelessWidget {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) => UserChoice(
-                                        title: "AMD",
-                                        imagePath: 'images/amd.png',
-                                        gpuName: "You have AMD",
-                                        gpuoffest: i
-                                      ),
+                                          title: "AMD",
+                                          imagePath: 'images/amd.png',
+                                          gpuName: "You have AMD",
+                                          gpuoffest: i),
                                     ),
                                   );
                                   print("AMD Clicked!");
@@ -224,11 +229,10 @@ class GPUList extends StatelessWidget {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) => UserChoice(
-                                        title: "AMD",
-                                        imagePath: 'images/amd.png',
-                                        gpuName: "You have AMD",
-                                        gpuoffest: i
-                                      ),
+                                          title: "AMD",
+                                          imagePath: 'images/amd.png',
+                                          gpuName: "You have AMD",
+                                          gpuoffest: i),
                                     ),
                                   );
                                   print("AMD Clicked!");
@@ -249,11 +253,10 @@ class GPUList extends StatelessWidget {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) => UserChoice(
-                                        title: "Intel",
-                                        imagePath: 'images/intel.png',
-                                        gpuName: "You have Intel",
-                                        gpuoffest: i
-                                      ),
+                                          title: "Intel",
+                                          imagePath: 'images/intel.png',
+                                          gpuName: "You have Intel",
+                                          gpuoffest: i),
                                     ),
                                   );
                                   print("Intel Clicked!");
@@ -272,11 +275,10 @@ class GPUList extends StatelessWidget {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) => UserChoice(
-                                        title: "Intel",
-                                        imagePath: 'images/intel.png',
-                                        gpuName: "You have Intel",
-                                        gpuoffest: i
-                                      ),
+                                          title: "Intel",
+                                          imagePath: 'images/intel.png',
+                                          gpuName: "You have Intel",
+                                          gpuoffest: i),
                                     ),
                                   );
                                   print("Intel Clicked!");
@@ -304,7 +306,6 @@ class GPUList extends StatelessWidget {
     );
   }
 }
-
 
 void appExit() {
   if (Platform.isLinux) {

@@ -1,70 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
-// class BenchMark_Results extends StatelessWidget {
-//   final String selectedFileName;
-//   final String fileExt;
-//   final String filePath;
-//   final String submittedKey;
-//   final String outputFilePath;
-
-//   BenchMark_Results({
-//     required this.selectedFileName,
-//     required this.fileExt,
-//     required this.filePath,
-//     required this.submittedKey,
-//     required this.outputFilePath,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Benchmark Results'),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             Text('Selected File Name: $selectedFileName'),
-//             Text('File Extension: $fileExt'),
-//             Text('File Path: $filePath'),
-//             Text('Submitted Key: $submittedKey'),
-//             Text('Output Path: $outputFilePath'),
-            
-
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-
-import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
-
 class BenchMark_Results extends StatelessWidget {
+  final String selectedFileName;
+  final String fileExt;
+  final String filePath;
+  final String submittedKey;
+  final String outputFilePath;
 
-    final String selectedFileName;
-    final String fileExt;
-    final String filePath;
-    final String submittedKey;
-    final String outputFilePath;
-
-    BenchMark_Results({
-      required this.selectedFileName,
-      required this.fileExt,
-      required this.filePath,
-      required this.submittedKey,
-      required this.outputFilePath,
-    });
+  BenchMark_Results({
+    required this.selectedFileName,
+    required this.fileExt,
+    required this.filePath,
+    required this.submittedKey,
+    required this.outputFilePath,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Charts Example'),
+        title: Text('Benchmark Results'),
       ),
       body: Row(
         children: [
@@ -79,12 +35,12 @@ class BenchMark_Results extends StatelessWidget {
                     BarChartRodData(fromY: 0, color: Colors.red, toY: 20),
                   ]),
                   BarChartGroupData(x: 1, barRods: [
-                     BarChartRodData(fromY: 0, color: Colors.blue, toY: 10),
+                    BarChartRodData(fromY: 0, color: Colors.blue, toY: 10),
                   ]),
                   BarChartGroupData(x: 2, barRods: [
                     BarChartRodData(fromY: 0, color: Colors.orange, toY: 30),
                   ]),
-                  BarChartGroupData(x: 2, barRods: [
+                  BarChartGroupData(x: 3, barRods: [
                     BarChartRodData(fromY: 0, color: Colors.yellow, toY: 50),
                   ]),
                 ],
@@ -109,13 +65,11 @@ class BenchMark_Results extends StatelessWidget {
                       value: 30,
                       title: 'A',
                     ),
-                    
-                  PieChartSectionData(
+                    PieChartSectionData(
                       color: Colors.green,
                       value: 40,
                       title: 'B',
                     ),
-                    
                   ],
                 ),
               ),
@@ -138,7 +92,6 @@ class BenchMark_Results extends StatelessWidget {
                       value: 35,
                       title: 'Y',
                     ),
-                   
                   ],
                 ),
               ),
