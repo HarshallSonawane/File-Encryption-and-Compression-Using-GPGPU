@@ -13,7 +13,7 @@ class _BarChart extends StatelessWidget {
         titlesData: titlesData,
         borderData: borderData,
         barGroups: barGroups,
-        gridData: const FlGridData(show: false),
+        gridData: const FlGridData(show: true),
         alignment: BarChartAlignment.spaceAround,
         maxY: 20,
       ),
@@ -64,7 +64,7 @@ class _BarChart extends StatelessWidget {
     }
     return SideTitleWidget(
       axisSide: meta.axisSide,
-      space: 4,
+      space: 1,
       child: Text(text, style: style),
     );
   }
@@ -78,9 +78,17 @@ class _BarChart extends StatelessWidget {
             getTitlesWidget: getTitles,
           ),
         ),
-        leftTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
+    //   leftTitles: AxisTitles(
+    //     showTitles: true,
+    //     getTextStyles: (value) => const TextStyle(color: Colors.blue),
+    //     margin: 8,
+    //     reservedSize: 30,
+    //     interval: 5, // Customize the interval between left titles
+    //     getTitles: (double value) {
+    //     // Customize the left titles based on your data
+    //       return value.toInt().toString();
+    //   },
+    // ),
         topTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
@@ -131,8 +139,8 @@ class _BarChartContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 500, // Set your desired width
-      height: 400, // Set your desired height
+      width: 700, // Set your desired width
+      height: 500, // Set your desired height
       decoration: BoxDecoration(
         color: Colors.white, // Set your desired background color
         borderRadius: BorderRadius.circular(10), // Optional: Set border radius
@@ -147,6 +155,7 @@ class _BarChartContainer extends StatelessWidget {
       ),
       child: _BarChart(),
     );
+
   }
 }
 
@@ -165,20 +174,39 @@ class BarChartSample3State extends State<BarChartSample3> {
       appBar: AppBar(
         title: Text('Results'),
       ),
-      body: Row(
+      body: Center(child: 
+      Row(
         children: [
           Container(
              width: 700,
             height: 500,
             child: _BarChartContainer(),
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-            child: _BarChartContainer(),
-            ),
-        ),
+          // Expanded(
+          //   child: Padding(
+          //     padding: const EdgeInsets.all(16.0),
+          //     child: PieChart(
+          //       PieChartData(
+          //         sections: [
+          //           PieChartSectionData(
+          //             color: Colors.red,
+          //             value: 30,
+          //             title: 'A',
+          //           ),
+                    
+          //         PieChartSectionData(
+          //             color: Colors.green,
+          //             value: 40,
+          //             title: 'B',
+          //           ),
+                    
+          //         ],
+          //       ),
+          //     ),
+          //   ),
+          // ),
       ],
+      ),
       ),
     );
   }
