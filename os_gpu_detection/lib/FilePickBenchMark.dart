@@ -1,23 +1,22 @@
-
+import 'package:ffi/ffi.dart';
 import 'package:flutter/material.dart';
 import 'package:os_gpu_detection/results.dart';
 import 'package:path/path.dart' as path;
-import 'package:file_picker/file_picker.dart';  
-
+import 'package:file_picker/file_picker.dart';
+import "lib.dart";
 
 class FilePickBench extends StatefulWidget {
   final String title;
   final String imagePath;
   final String description;
   final String gpu;
-  
 
   FilePickBench({
     required this.title,
     required this.imagePath,
     required this.description,
-    required this.gpu, 
-    required String gpuName, 
+    required this.gpu,
+    required String gpuName,
     required int gpuoffest,
   });
 
@@ -56,7 +55,7 @@ class ChooseFile extends State<FilePickBench> {
   TextEditingController keyController = TextEditingController();
   String submittedKey = "";
   String filePath = "";
-  String outputFilePath = ""; 
+  String outputFilePath = "";
   String trimmedPath = "";
 
   void _selectPath() async {
@@ -78,7 +77,8 @@ class ChooseFile extends State<FilePickBench> {
     );
 
     if (result != null) {
-      String selectedExtension = result.files.first.extension?.toLowerCase() ?? "";
+      String selectedExtension =
+          result.files.first.extension?.toLowerCase() ?? "";
 
       if (allowedExtensions.contains(selectedExtension)) {
         setState(() {
@@ -110,15 +110,13 @@ class ChooseFile extends State<FilePickBench> {
     _trimPath(outputFilePath);
   }
 
-   void _trimPath(String fullPath) {
-
+  void _trimPath(String fullPath) {
     String pathWithoutPrefix = fullPath.replaceFirst("file:///", "");
     String directory = path.dirname(pathWithoutPrefix);
     String fileName = path.basename(pathWithoutPrefix);
 
     trimmedPath = path.join(directory, "");
     print(trimmedPath);
-  
   }
 
   void _openFilePicker() async {
@@ -173,27 +171,52 @@ class ChooseFile extends State<FilePickBench> {
   }
 
   void _submitKey() {
-   
     //Default value for Benchmarking
-      setState(() {
-        submittedKey = "0000000000000000";
-      });
+    setState(() {
+      submittedKey = "0000000000000000";
+    });
 
-      // FOR BENCHMARKING MODE ONLY!!!!!!!
-      if (title == "Benchmarking") {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const BarChartt()
+    // final inputPath = filePath.toNativeUtf8();
+    // final outputPath = trimmedPath.toNativeUtf8();
+    // final password = submittedKey.toNativeUtf8();
+
+    // if (fileExt != "txt" && fileExt != "enc") {
+    //   aesCPUEncryptTime = double.parse(
+    //       aesCPUEncrypt(inputPath, outputPath, password).toStringAsFixed(2));
+    //   print("AES Encryption Time = $aesCPUEncryptTime ms");
+    // } else if (fileExt == "txt") {
+    //   aesCPUHuffmanEncryptTime = double.parse(
+    //       aesCPUHuffmanEncrypt(inputPath, outputPath, password)
+    //           .toStringAsFixed(2));
+    //   print("AES + Huffman Encryption Time = $aesCPUHuffmanEncryptTime ms");
+    // } else if (fileExt == "enc" && !selectedFileName.contains("txt.enc")) {
+    //   aesCPUDecryptTime = double.parse(
+    //       aesCPUDecrypt(inputPath, outputPath, password).toStringAsFixed(2));
+    //   print("AES Decryption Time = $aesCPUEncryptTime ms");
+    // } else if (fileExt == "enc" && selectedFileName.contains("txt.enc")) {
+    //   aesCPUHuffmanDecryptTime = double.parse(
+    //       aesCPUHuffmanDecrypt(inputPath, outputPath, password)
+    //           .toStringAsFixed(2));
+    //   print("AES + Huffman Decryption Time = $aesCPUHuffmanDecryptTime ms");
+    // }
+
+    // calloc.free(password);
+    // calloc.free(outputPath);
+    // calloc.free(inputPath);
+
+    // FOR BENCHMARKING MODE ONLY!!!!!!!
+    if (title == "Benchmarking") {
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => const BarChartt()
             //   selectedFileName: selectedFileName,
             //   fileExt: fileExt,
             //   filePath: filePath,
             //   submittedKey: submittedKey,
             //   outputFilePath: "none",
             // ),
-          ),
-        );
-      }
-    
+            ),
+      );
+    }
   }
 
   @override
@@ -202,10 +225,11 @@ class ChooseFile extends State<FilePickBench> {
     super.dispose();
   }
 
-@override
+  @override
   Widget build(BuildContext context) {
-    Color benchmarkingCardColor =
-        description.toLowerCase() == 'nvidia' ? Colors.green : Colors.deepOrange;
+    Color benchmarkingCardColor = description.toLowerCase() == 'nvidia'
+        ? Colors.green
+        : Colors.deepOrange;
     return Scaffold(
       appBar: AppBar(
         title: Text('GPGPU Based File Encryption'),
@@ -214,21 +238,19 @@ class ChooseFile extends State<FilePickBench> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-           children: <Widget>[
-
-            
+          children: <Widget>[
             const Padding(
-            padding: EdgeInsets.all(25.0),
-            child: Text(
-              'CPU v/s GPU Performance Analysis',
-              style: TextStyle(
-                fontFamily: "Cascadia Code",
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
+              padding: EdgeInsets.all(25.0),
+              child: Text(
+                'CPU v/s GPU Performance Analysis',
+                style: TextStyle(
+                  fontFamily: "Cascadia Code",
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
             ),
-          ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -250,7 +272,7 @@ class ChooseFile extends State<FilePickBench> {
                 ),
                 SizedBox(width: 20),
                 ElevatedButton(
-                  onPressed:_selectPath,
+                  onPressed: _selectPath,
                   child: Text('Output Path'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: benchmarkingCardColor,
@@ -267,31 +289,30 @@ class ChooseFile extends State<FilePickBench> {
                 ),
                 SizedBox(width: 20),
                 ElevatedButton(
-                onPressed: () {
-                  _submitKey();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Entering Benchmarking Mode...'),
+                  onPressed: () {
+                    _submitKey();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Entering Benchmarking Mode...'),
+                      ),
+                    );
+                  },
+                  child: const Text('Benchmark'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: benchmarkingCardColor,
+                    fixedSize: const Size(180, 60),
+                    textStyle: const TextStyle(
+                      fontFamily: "Cascadia Code",
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
                     ),
-                  );
-                },
-                child: const Text('Benchmark'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: benchmarkingCardColor,
-                  fixedSize: const Size(180, 60),
-                  textStyle: const TextStyle(
-                    fontFamily: "Cascadia Code",
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
                   ),
                 ),
-              ),
               ],
             ),
-
 
             //DEBUG
             // //---------------------------------------------------------
@@ -323,8 +344,6 @@ class ChooseFile extends State<FilePickBench> {
             // SizedBox(height: 20),
             // ---------------------------------------------------
 
-            
-           
             // SizedBox(height: 20),
             // Text(
             //   submittedKey,
