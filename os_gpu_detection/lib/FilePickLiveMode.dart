@@ -43,6 +43,9 @@ class ChooseFile extends State<FilePickLive> {
     gpu = widget.gpu;
   }
 
+  TextEditingController _passwordController = TextEditingController();
+  bool hide = true;
+
   List<String> allowedExtensions = [
     'jpg',
     'png',
@@ -346,9 +349,11 @@ class ChooseFile extends State<FilePickLive> {
                   const EdgeInsets.symmetric(horizontal: 300, vertical: 20),
               child: TextField(
                 controller: keyController,
+                obscureText: true,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Enter Password:',
+                  hintText: 'Enter Pasword',
                   counterText: '',
                 ),
                 maxLength: 16,
