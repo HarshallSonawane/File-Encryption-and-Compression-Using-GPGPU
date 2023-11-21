@@ -1,22 +1,17 @@
 import "dart:io";
-import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
-import 'package:os_gpu_detection/UserChoice.dart';
+import 'package:os_gpu_detection/user_choice.dart';
 import "dart:ffi";
 import "package:window_manager/window_manager.dart";
-import "package:logger/logger.dart";
 import "package:flutter_window_close/flutter_window_close.dart";
 import "package:path/path.dart" as path;
 import "gpu_info.dart";
 import "dart:ui" as ui;
 import "lib.dart";
 
-int gpuoffest = 0;
+int gpuOffset = 0;
 int gpuCount = 0;
 List<String> gpuList = [];
-var logger = Logger(
-  printer: PrettyPrinter(),
-);
 const appName = "Data Compression and Encryption using GPGPU";
 
 void main() async {
@@ -29,7 +24,7 @@ void main() async {
       center: true,
       backgroundColor: Colors.transparent,
       skipTaskbar: false,
-      fullScreen: true,
+      fullScreen: false,
       windowButtonVisibility: true,
     );
     windowManager.waitUntilReadyToShow(windowOptions, () async {
@@ -124,7 +119,7 @@ class GPUList extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -139,7 +134,7 @@ class GPUList extends StatelessWidget {
                       padding: const EdgeInsets.all(20),
                       child: GestureDetector(
                         onTap: () {
-                          print("Card Clicked!");
+                          logger.i("Card Clicked");
                         },
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -161,12 +156,12 @@ class GPUList extends StatelessWidget {
                                       builder: (context) => UserChoice(
                                         title: "Nvidia",
                                         imagePath: 'images/nvidia.png',
-                                        gpuName: "Nvidia",
-                                        gpuoffest: i,
+                                        gpuName: gpuList[i],
+                                        gpuOffset: i,
                                       ),
                                     ),
                                   );
-                                  print("Nvidia Clicked!");
+                                  logger.i(gpuList[i]);
                                 },
                                 child: Image.asset(
                                   'images/nvidia.png',
@@ -184,12 +179,12 @@ class GPUList extends StatelessWidget {
                                       builder: (context) => UserChoice(
                                         title: "Nvidia",
                                         imagePath: 'images/nvidia.png',
-                                        gpuName: "You have Nvidia",
-                                        gpuoffest: i,
+                                        gpuName: gpuList[i],
+                                        gpuOffset: i,
                                       ),
                                     ),
                                   );
-                                  print("Nvidia Clicked!");
+                                  logger.i(gpuList[i]);
                                 },
                                 child: const Text(
                                   "CUDA",
@@ -209,11 +204,11 @@ class GPUList extends StatelessWidget {
                                       builder: (context) => UserChoice(
                                           title: "AMD",
                                           imagePath: 'images/amd.png',
-                                          gpuName: "You have AMD",
-                                          gpuoffest: i),
+                                          gpuName: gpuList[i],
+                                          gpuOffset: i),
                                     ),
                                   );
-                                  print("AMD Clicked!");
+                                  logger.i(gpuList[i]);
                                 },
                                 child: Image.asset(
                                   'images/amd.png',
@@ -231,11 +226,11 @@ class GPUList extends StatelessWidget {
                                       builder: (context) => UserChoice(
                                           title: "AMD",
                                           imagePath: 'images/amd.png',
-                                          gpuName: "You have AMD",
-                                          gpuoffest: i),
+                                          gpuName: gpuList[i],
+                                          gpuOffset: i),
                                     ),
                                   );
-                                  print("AMD Clicked!");
+                                  logger.i(gpuList[i]);
                                 },
                                 child: const Text(
                                   "OpenCL",
@@ -255,11 +250,11 @@ class GPUList extends StatelessWidget {
                                       builder: (context) => UserChoice(
                                           title: "Intel",
                                           imagePath: 'images/intel.png',
-                                          gpuName: "You have Intel",
-                                          gpuoffest: i),
+                                          gpuName: gpuList[i],
+                                          gpuOffset: i),
                                     ),
                                   );
-                                  print("Intel Clicked!");
+                                  logger.i(gpuList[i]);
                                 },
                                 child: Image.asset(
                                   'images/intel.png',
@@ -277,11 +272,11 @@ class GPUList extends StatelessWidget {
                                       builder: (context) => UserChoice(
                                           title: "Intel",
                                           imagePath: 'images/intel.png',
-                                          gpuName: "You have Intel",
-                                          gpuoffest: i),
+                                          gpuName: gpuList[i],
+                                          gpuOffset: i),
                                     ),
                                   );
-                                  print("Intel Clicked!");
+                                  logger.i(gpuList[i]);
                                 },
                                 child: const Text(
                                   "OpenCL",

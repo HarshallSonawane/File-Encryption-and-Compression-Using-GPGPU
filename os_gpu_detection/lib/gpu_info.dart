@@ -3,6 +3,7 @@ import "package:win32/win32.dart";
 import "dart:io";
 import "dart:ffi" as dart_ffi;
 import "package:os_gpu_detection/main.dart";
+import "lib.dart";
 
 int getGPUDetails() {
   if (Platform.isWindows) {

@@ -1,5 +1,11 @@
 import "dart:ffi";
 import "package:ffi/ffi.dart";
+import "package:logger/logger.dart";
+
+// Global Variables
+var logger = Logger(
+  printer: PrettyPrinter(),
+);
 
 // Typedefs
 typedef DartFunc = Double Function(

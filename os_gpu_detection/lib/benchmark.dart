@@ -17,7 +17,7 @@ class FilePickBench extends StatefulWidget {
     required this.description,
     required this.gpu,
     required String gpuName,
-    required int gpuoffest,
+    required int gpuOffset,
   });
 
   @override
@@ -91,14 +91,14 @@ class ChooseFile extends State<FilePickBench> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text("ERROR ⚠️"),
-              content: Text("Please select an appropriate file."),
+              title: const Text("ERROR ⚠️"),
+              content: const Text("Please select an appropriate file."),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text("OK"),
+                  child: const Text("OK"),
                 ),
               ],
             );
@@ -116,7 +116,7 @@ class ChooseFile extends State<FilePickBench> {
     String fileName = path.basename(pathWithoutPrefix);
 
     trimmedPath = path.join(directory, "");
-    print(trimmedPath);
+    logger.i(trimmedPath);
   }
 
   void _openFilePicker() async {
@@ -227,12 +227,11 @@ class ChooseFile extends State<FilePickBench> {
 
   @override
   Widget build(BuildContext context) {
-    Color benchmarkingCardColor = description.toLowerCase() == 'nvidia'
-        ? Colors.green
-        : Colors.deepOrange;
+    Color benchmarkingCardColor =
+        description.contains("NVIDIA") ? Colors.green : Colors.deepOrange;
     return Scaffold(
       appBar: AppBar(
-        title: Text('GPGPU Based File Encryption'),
+        title: const Text('GPGPU Based File Encryption'),
         backgroundColor: benchmarkingCardColor,
       ),
       body: Center(
@@ -256,7 +255,7 @@ class ChooseFile extends State<FilePickBench> {
               children: [
                 ElevatedButton(
                   onPressed: _openFilePicker,
-                  child: Text('Select File'),
+                  child: const Text('Select File'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: benchmarkingCardColor,
                     fixedSize: const Size(180, 60),
@@ -270,10 +269,10 @@ class ChooseFile extends State<FilePickBench> {
                     ),
                   ),
                 ),
-                SizedBox(width: 20),
+                const SizedBox(width: 20),
                 ElevatedButton(
                   onPressed: _selectPath,
-                  child: Text('Output Path'),
+                  child: const Text('Output Path'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: benchmarkingCardColor,
                     fixedSize: const Size(180, 60),
@@ -287,7 +286,7 @@ class ChooseFile extends State<FilePickBench> {
                     ),
                   ),
                 ),
-                SizedBox(width: 20),
+                const SizedBox(width: 20),
                 ElevatedButton(
                   onPressed: () {
                     _submitKey();

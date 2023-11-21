@@ -2,7 +2,6 @@ import 'package:ffi/ffi.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'benchmark_results.dart';
 import "lib.dart";
 
 // late int isClicked = 0;
@@ -20,7 +19,7 @@ class FilePickLive extends StatefulWidget {
     required this.description,
     required this.gpu,
     required String gpuName,
-    required int gpuoffest,
+    required int gpuOffset,
   });
 
   @override
@@ -32,7 +31,6 @@ class ChooseFile extends State<FilePickLive> {
   late String imagePath;
   late String description;
   late String gpu;
-  
 
   @override
   void initState() {
@@ -101,14 +99,14 @@ class ChooseFile extends State<FilePickLive> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text("ERROR ⚠️"),
-              content: Text("Please select an appropriate file."),
+              title: const Text("ERROR ⚠️"),
+              content: const Text("Please select an appropriate file."),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text("OK"),
+                  child: const Text("OK"),
                 ),
               ],
             );
@@ -117,7 +115,6 @@ class ChooseFile extends State<FilePickLive> {
       }
     }
 
-    
     _trimPath(outputFilePath);
   }
 
@@ -164,14 +161,14 @@ class ChooseFile extends State<FilePickLive> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text("ERROR ⚠️"),
-              content: Text("Please select an appropriate file."),
+              title: const Text("ERROR ⚠️"),
+              content: const Text("Please select an appropriate file."),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text("OK"),
+                  child: const Text("OK"),
                 ),
               ],
             );
@@ -243,14 +240,14 @@ class ChooseFile extends State<FilePickLive> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("⚠️"),
-            content: Text("Password cannot be empty"),
+            title: const Text("⚠️"),
+            content: const Text("Password cannot be empty"),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text("OK"),
+                child: const Text("OK"),
               ),
             ],
           );
@@ -265,12 +262,11 @@ class ChooseFile extends State<FilePickLive> {
     super.dispose();
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('GPGPU Based File Encryption'),
+        title: const Text('GPGPU Based File Encryption'),
       ),
       body: Center(
         child: Column(
@@ -281,7 +277,7 @@ class ChooseFile extends State<FilePickLive> {
               children: [
                 ElevatedButton(
                   onPressed: _openFilePicker,
-                  child: Text('Select File'),
+                  child: const Text('Select File'),
                   style: ElevatedButton.styleFrom(
                     fixedSize: const Size(180, 60),
                     textStyle: const TextStyle(
@@ -294,10 +290,9 @@ class ChooseFile extends State<FilePickLive> {
                     ),
                   ),
                 ),
-                SizedBox(width: 20),
+                const SizedBox(width: 20),
                 ElevatedButton(
                   onPressed: _selectPath,
-                  child: Text('Output Path'),
                   style: ElevatedButton.styleFrom(
                     fixedSize: const Size(180, 60),
                     textStyle: const TextStyle(
@@ -309,6 +304,7 @@ class ChooseFile extends State<FilePickLive> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
+                  child: const Text('Output Path'),
                 ),
               ],
             ),
@@ -336,8 +332,8 @@ class ChooseFile extends State<FilePickLive> {
             //   "Path: " + filePath,
             //   style: TextStyle(fontSize: 18),
             // ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Enter Password:',
               style: TextStyle(fontSize: 18),
             ),
@@ -360,7 +356,7 @@ class ChooseFile extends State<FilePickLive> {
                 minLines: 1,
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 _submitKey();
@@ -370,7 +366,6 @@ class ChooseFile extends State<FilePickLive> {
                   ),
                 );
               },
-              child: const Text('Submit Password'),
               style: ElevatedButton.styleFrom(
                 fixedSize: const Size(180, 60),
                 textStyle: const TextStyle(
@@ -382,10 +377,10 @@ class ChooseFile extends State<FilePickLive> {
                   borderRadius: BorderRadius.circular(30),
                 ),
               ),
+              child: const Text('Enter Password'),
             ),
-            SizedBox(height: 20),
-            
-            
+            const SizedBox(height: 20),
+
             //DEBUG
             // Text(
             //   submittedKey,

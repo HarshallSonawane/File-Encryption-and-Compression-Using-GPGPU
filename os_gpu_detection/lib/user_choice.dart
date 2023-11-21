@@ -1,48 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:os_gpu_detection/FilePickLiveMode.dart';
-import 'FilePickBenchMark.dart';
+import 'package:os_gpu_detection/live_mode.dart';
+import 'benchmark.dart';
 
 class UserChoice extends StatelessWidget {
   final String title;
   final String imagePath;
   final String gpuName;
-  int gpuoffest;
-  var black;
+  int gpuOffset;
 
   UserChoice({
     required this.title,
     required this.imagePath,
     required this.gpuName,
-    required this.gpuoffest,
+    required this.gpuOffset,
   });
 
   @override
   Widget build(BuildContext context) {
     Color benchmarkingCardColor =
-        gpuName.toLowerCase() == 'nvidia' ? Colors.green : Colors.deepOrange;
+        gpuName.contains("NVIDIA") ? Colors.green : Colors.deepOrange;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Choice'),
+        title: const Text('User Choice'),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-         
           const Padding(
             padding: EdgeInsets.all(16.0),
             child: Text(
               'Select Your Preferred Mode Of Operation',
               style: TextStyle(
                 fontFamily: "Cascadia Code",
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
               ),
             ),
           ),
-          
-          SizedBox(height: 30),
+
+          const SizedBox(height: 30),
           // Row of cards
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -58,20 +56,19 @@ class UserChoice extends StatelessWidget {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => FilePickLive(
-                          title: "Secure File",
-                          gpu: this.title,
-                          imagePath: this.imagePath,
-                          description: this.gpuName,
-                          gpuName: gpuName,
-                          gpuoffest: gpuoffest
-                        ),
+                            title: "Secure File",
+                            gpu: title,
+                            imagePath: imagePath,
+                            description: gpuName,
+                            gpuName: gpuName,
+                            gpuOffset: gpuOffset),
                       ),
                     );
                   },
                   child: Container(
                     width: 300,
                     height: 300,
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -103,20 +100,19 @@ class UserChoice extends StatelessWidget {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => FilePickBench(
-                          title: "Benchmarking",
-                          gpu: this.title,
-                          imagePath: this.imagePath,
-                          description: this.gpuName,
-                          gpuName: gpuName,
-                          gpuoffest: gpuoffest
-                        ),
+                            title: "Benchmarking",
+                            gpu: title,
+                            imagePath: imagePath,
+                            description: gpuName,
+                            gpuName: gpuName,
+                            gpuOffset: gpuOffset),
                       ),
                     );
                   },
                   child: Container(
                     width: 300,
                     height: 300,
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
