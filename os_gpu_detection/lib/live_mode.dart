@@ -2,6 +2,8 @@ import 'package:ffi/ffi.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
+import 'package:file_selector/file_selector.dart';
 import "lib.dart";
 
 // late int isClicked = 0;
@@ -61,70 +63,20 @@ class ChooseFile extends State<FilePickLive> {
   TextEditingController keyController = TextEditingController();
   String submittedKey = "";
   String filePath = "";
+  final bool _isIOS = !kIsWeb && defaultTargetPlatform == TargetPlatform.iOS;
 
-  String outputFilePath = "";
-  String trimmedPath = "";
 
-  void _selectPath() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      allowMultiple: false,
-      dialogTitle: 'Select Output Path',
-      type: FileType.custom,
-      allowedExtensions: [
-        'enc',
-        'jpg',
-        'png',
-        'pdf',
-        'txt',
-        'mp4',
-        'mov',
-        'docx',
-        'heif',
-        'jpeg'
-      ],
+  Future<void> _getDirectoryPath() async {
+    const String confirmButtonText = 'Choose';
+    final String? directoryPath = await getDirectoryPath(
+      confirmButtonText: confirmButtonText,
     );
-
-    if (result != null) {
-      String selectedExtension =
-          result.files.first.extension?.toLowerCase() ?? "";
-
-      if (allowedExtensions.contains(selectedExtension)) {
-        setState(() {
-          // Store the selected path in the new variable
-          outputFilePath = result.files.first.path ?? "";
-        });
-      } else {
-        // Show an alert dialog for inappropriate file extension
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text("ERROR ⚠️"),
-              content: const Text("Please select an appropriate file."),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text("OK"),
-                ),
-              ],
-            );
-          },
-        );
-      }
+    if (directoryPath == null) {
+      // Operation was canceled by the user.
+      return;
     }
-
-    _trimPath(outputFilePath);
-  }
-
-  void _trimPath(String fullPath) {
-    String pathWithoutPrefix = fullPath.replaceFirst("file:///", "");
-    String directory = path.dirname(pathWithoutPrefix);
-    String fileName = path.basename(pathWithoutPrefix);
-
-    trimmedPath = path.join(directory, "");
-    print(trimmedPath);
+    logger.i("Output Path --> $directoryPath");
+    
   }
 
   void _openFilePicker() async {
@@ -157,6 +109,7 @@ class ChooseFile extends State<FilePickLive> {
         });
       } else {
         // Show an alert dialog for inappropriate file extension
+        // ignore: use_build_context_synchronously
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -176,15 +129,6 @@ class ChooseFile extends State<FilePickLive> {
         );
       }
     }
-
-    // isClicked = 1;
-    // if(isClicked == 1){
-    //   btnTxt = "Output Path";
-    //   isClicked = 0;
-    // }
-    // if(isClicked == 0){
-    //   btnTxt = "Select File";
-    // }
   }
 
   void _submitKey() {
@@ -262,6 +206,13 @@ class ChooseFile extends State<FilePickLive> {
     super.dispose();
   }
 
+  bool _isObscured = true;
+    void _toggle() {
+    setState(() {
+      _isObscured = !_isObscured;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -292,7 +243,7 @@ class ChooseFile extends State<FilePickLive> {
                 ),
                 const SizedBox(width: 20),
                 ElevatedButton(
-                  onPressed: _selectPath,
+                  onPressed: _isIOS ? null : () => _getDirectoryPath(),
                   style: ElevatedButton.styleFrom(
                     fixedSize: const Size(180, 60),
                     textStyle: const TextStyle(
@@ -311,9 +262,9 @@ class ChooseFile extends State<FilePickLive> {
 
             //  DEBUGGING
             // ------------------------------------------------------------------
-            //SizedBox(height: 20),
+            // SizedBox(height: 20),
             // Text(
-            //   "Output Path: " + trimmedPath,
+            //   "Output Path: " +outputP ,
             //   style: TextStyle(fontSize: 18),
             // ),
             // Text(
@@ -333,24 +284,25 @@ class ChooseFile extends State<FilePickLive> {
             //   style: TextStyle(fontSize: 18),
             // ),
             const SizedBox(height: 20),
-            const Text(
-              'Enter Password:',
-              style: TextStyle(fontSize: 18),
-            ),
-            // SizedBox(height: 10),
-            // ------------------------------------------------------------------
-
+            
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 300, vertical: 20),
               child: TextField(
                 controller: keyController,
-                obscureText: true,
+                obscureText: _isObscured,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Enter Password:',
                   hintText: 'Enter Pasword',
                   counterText: '',
+                //   suffixIcon: IconButton(icon: Icon(_isObscured ? Icons.visibility : Icons.visibility_off),
+                  // onPressed: (){
+                  //   setState(() {
+                  //     _isObscured = !_isObscured;
+                  //   });
+                  // },
+                // ),
                 ),
                 maxLength: 16,
                 minLines: 1,

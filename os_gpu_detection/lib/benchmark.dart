@@ -1,7 +1,10 @@
 import 'package:ffi/ffi.dart';
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:os_gpu_detection/results.dart';
 import 'package:path/path.dart' as path;
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:file_picker/file_picker.dart';
 import "lib.dart";
 
@@ -57,6 +60,21 @@ class ChooseFile extends State<FilePickBench> {
   String filePath = "";
   String outputFilePath = "";
   String trimmedPath = "";
+  final bool _isIOS = !kIsWeb && defaultTargetPlatform == TargetPlatform.iOS;
+
+  Future<void> _getDirectoryPath() async {
+    const String confirmButtonText = 'Choose';
+    final String? directoryPath = await getDirectoryPath(
+      confirmButtonText: confirmButtonText,
+    );
+    if (directoryPath == null) {
+      // Operation was canceled by the user.
+      return;
+    }
+    logger.i("Output Path --> $directoryPath");
+    
+  }
+
 
   void _selectPath() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -87,6 +105,7 @@ class ChooseFile extends State<FilePickBench> {
         });
       } else {
         // Show an alert dialog for inappropriate file extension
+        // ignore: use_build_context_synchronously
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -271,7 +290,7 @@ class ChooseFile extends State<FilePickBench> {
                 ),
                 const SizedBox(width: 20),
                 ElevatedButton(
-                  onPressed: _selectPath,
+                  onPressed: _isIOS ? null : () => _getDirectoryPath(),
                   child: const Text('Output Path'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: benchmarkingCardColor,
