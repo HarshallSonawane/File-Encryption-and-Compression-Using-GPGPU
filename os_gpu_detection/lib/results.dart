@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:os_gpu_detection/lib.dart';
 
 double timeTakenCPU = 641.3;
 double timeTakenGPU = 62.30;
@@ -46,7 +47,7 @@ class _BarChart extends StatelessWidget {
       );
 
   Widget getTitles(double value, TitleMeta meta) {
-    final style = TextStyle(
+    const style = TextStyle(
       fontFamily: "Cascadia Code",
       color: Colors.black,
       fontWeight: FontWeight.bold,
@@ -56,7 +57,7 @@ class _BarChart extends StatelessWidget {
 
     switch (value.toInt()) {
       case 0:
-        text = 'CPU';
+        text = cpuName;
         break;
       case 1:
         text = 'GPU';

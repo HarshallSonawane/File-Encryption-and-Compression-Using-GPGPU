@@ -200,21 +200,21 @@ class ChooseFile extends State<FilePickBench> {
     // if (fileExt != "txt" && fileExt != "enc") {
     //   aesCPUEncryptTime = double.parse(
     //       aesCPUEncrypt(inputPath, outputPath, password).toStringAsFixed(2));
-    //   print("AES Encryption Time = $aesCPUEncryptTime ms");
+    //   logger.i("AES Encryption Time = $aesCPUEncryptTime ms");
     // } else if (fileExt == "txt") {
     //   aesCPUHuffmanEncryptTime = double.parse(
     //       aesCPUHuffmanEncrypt(inputPath, outputPath, password)
     //           .toStringAsFixed(2));
-    //   print("AES + Huffman Encryption Time = $aesCPUHuffmanEncryptTime ms");
+    //   logger.i("AES + Huffman Encryption Time = $aesCPUHuffmanEncryptTime ms");
     // } else if (fileExt == "enc" && !selectedFileName.contains("txt.enc")) {
     //   aesCPUDecryptTime = double.parse(
     //       aesCPUDecrypt(inputPath, outputPath, password).toStringAsFixed(2));
-    //   print("AES Decryption Time = $aesCPUEncryptTime ms");
+    //   logger.i("AES Decryption Time = $aesCPUEncryptTime ms");
     // } else if (fileExt == "enc" && selectedFileName.contains("txt.enc")) {
     //   aesCPUHuffmanDecryptTime = double.parse(
     //       aesCPUHuffmanDecrypt(inputPath, outputPath, password)
     //           .toStringAsFixed(2));
-    //   print("AES + Huffman Decryption Time = $aesCPUHuffmanDecryptTime ms");
+    //   logger.i("AES + Huffman Decryption Time = $aesCPUHuffmanDecryptTime ms");
     // }
 
     // calloc.free(password);

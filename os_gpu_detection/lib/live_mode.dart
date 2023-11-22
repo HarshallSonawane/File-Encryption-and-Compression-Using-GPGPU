@@ -162,34 +162,19 @@ class ChooseFile extends State<FilePickLive> {
       // calloc.free(password);
       // calloc.free(outputPath);
       // calloc.free(inputPath);
-
-      // //FOR BENCHMARKING MODE ONLY!!!!!!!
-      //   if(title == "Benchmarking"){
-      //     Navigator.of(context).push(
-      //               MaterialPageRoute(
-      //                 builder: (context) => BenchMark_Results(
-      //                   selectedFileName: selectedFileName,
-      //                   fileExt: fileExt,
-      //                   filePath: filePath,
-      //                   submittedKey: submittedKey,
-      //                   outputFilePath: trimmedPath,
-      //                 ),
-      //               ),
-      //     );
-      //   }
     } else {
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text("⚠️"),
-            content: const Text("Password cannot be empty"),
+            content: const Text("Password Cannot Be Empty !!!"),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: const Text("OK"),
+                child: const Text("Ok"),
               ),
             ],
           );

@@ -9,23 +9,32 @@ import 'package:system_info2/system_info2.dart';
 const int gb = 1024 * 1024 * 1024;
 
 void getDeviceDetails() {
-  // logger.e(
-  //     "Platform Info : ${"${SysInfo.kernelName} ${SysInfo.kernelArchitecture} ${SysInfo.operatingSystemName} ${SysInfo.kernelVersion} ${SysInfo.operatingSystemVersion}"}");
+  // logger.i(
+  //     "Platform Info : ${"${SysInfo.operatingSystemName} ${SysInfo.kernelVersion}"}");
 
   // final cores = SysInfo.cores;
-  // logger.e("CPU Name : ${cores[0].name}");
-  // logger.e('Number of core    : ${cores.length ~/ 2}');
-  // logger.e('Number of threads    : ${cores.length}');
-  // logger.e('Total physical memory   '
-  //     ': ${(SysInfo.getTotalPhysicalMemory() / gb).ceil()} GB');
+  // logger.i("CPU Name : ${cores[0].name}");
 
-  platformInfo =
-      "${SysInfo.kernelName} ${SysInfo.kernelArchitecture} ${SysInfo.operatingSystemName} ${SysInfo.kernelVersion} ${SysInfo.operatingSystemVersion}";
+  // if (Platform.isLinux) {
+  //   logger.i('Number of Cores    : ${cores.length ~/ 2}');
+  //   logger.i('Number of Threads    : ${cores.length}');
+  // } else {
+  //   logger.i('Number of Cores    : ${cores.length}');
+  //   logger.i('Number of Threads    : ${cores.length * 2}');
+  // }
 
+  // logger.i('RAM : ${(SysInfo.getTotalPhysicalMemory() / gb).ceil()} GB');
+
+  platformInfo = "${SysInfo.operatingSystemName} ${SysInfo.kernelVersion}";
   final cores = SysInfo.cores;
   cpuName = cores[0].name;
-  cpuCores = (cores.length ~/ 2).toString();
-  cpuThreads = (cores.length).toString();
+  if (Platform.isLinux) {
+    cpuCores = (cores.length ~/ 2).toString();
+    cpuThreads = (cores.length).toString();
+  } else {
+    cpuCores = (cores.length).toString();
+    cpuThreads = ((cores.length) * 2).toString();
+  }
   totalMemory = (SysInfo.getTotalPhysicalMemory() / gb).ceil().toString();
 }
 

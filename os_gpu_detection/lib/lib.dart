@@ -7,13 +7,7 @@ var logger = Logger(
   printer: PrettyPrinter(),
 );
 
-late String platformInfo,
-    cpuName,
-    cpuCores,
-    cpuThreads,
-    totalMemory,
-    gpuVRAM,
-    gpuCUCount;
+late String platformInfo, cpuName, cpuCores, cpuThreads, totalMemory, gpuInfo;
 
 // Typedefs
 typedef DartFunc = Double Function(
