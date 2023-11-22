@@ -4,6 +4,30 @@ import "dart:io";
 import "dart:ffi" as dart_ffi;
 import "package:os_gpu_detection/main.dart";
 import "lib.dart";
+import 'package:system_info2/system_info2.dart';
+
+const int gb = 1024 * 1024 * 1024;
+
+void getDeviceDetails() {
+  // logger.e(
+  //     "Platform Info : ${"${SysInfo.kernelName} ${SysInfo.kernelArchitecture} ${SysInfo.operatingSystemName} ${SysInfo.kernelVersion} ${SysInfo.operatingSystemVersion}"}");
+
+  // final cores = SysInfo.cores;
+  // logger.e("CPU Name : ${cores[0].name}");
+  // logger.e('Number of core    : ${cores.length ~/ 2}');
+  // logger.e('Number of threads    : ${cores.length}');
+  // logger.e('Total physical memory   '
+  //     ': ${(SysInfo.getTotalPhysicalMemory() / gb).ceil()} GB');
+
+  platformInfo =
+      "${SysInfo.kernelName} ${SysInfo.kernelArchitecture} ${SysInfo.operatingSystemName} ${SysInfo.kernelVersion} ${SysInfo.operatingSystemVersion}";
+
+  final cores = SysInfo.cores;
+  cpuName = cores[0].name;
+  cpuCores = (cores.length ~/ 2).toString();
+  cpuThreads = (cores.length).toString();
+  totalMemory = (SysInfo.getTotalPhysicalMemory() / gb).ceil().toString();
+}
 
 int getGPUDetails() {
   if (Platform.isWindows) {

@@ -7,6 +7,14 @@ var logger = Logger(
   printer: PrettyPrinter(),
 );
 
+late String platformInfo,
+    cpuName,
+    cpuCores,
+    cpuThreads,
+    totalMemory,
+    gpuVRAM,
+    gpuCUCount;
+
 // Typedefs
 typedef DartFunc = Double Function(
     Pointer<Utf8> inputPath, Pointer<Utf8> outputPath, Pointer<Utf8> password);
@@ -15,6 +23,8 @@ typedef NativeFunc = double Function(
 
 typedef RunGPUScriptFunc = Void Function();
 typedef RunGPUScript = void Function();
+
+late int Function(RunGPUScriptFunc) getCudaSmCount, getOpenCLComputeCount;
 
 late String gpuInfoLibPath, cpuLibPath, oclLibPath, cudaLibPath;
 late DynamicLibrary gpuInfoDynamicLib,

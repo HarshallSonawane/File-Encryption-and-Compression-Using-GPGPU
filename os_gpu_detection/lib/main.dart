@@ -5,7 +5,7 @@ import "dart:ffi";
 import "package:window_manager/window_manager.dart";
 import "package:flutter_window_close/flutter_window_close.dart";
 import "package:path/path.dart" as path;
-import "gpu_info.dart";
+import 'device_info.dart';
 import "dart:ui" as ui;
 import "lib.dart";
 
@@ -24,7 +24,7 @@ void main() async {
       center: true,
       backgroundColor: Colors.transparent,
       skipTaskbar: false,
-      fullScreen: true,
+      fullScreen: false,
       windowButtonVisibility: true,
     );
     windowManager.waitUntilReadyToShow(windowOptions, () async {
@@ -61,6 +61,8 @@ void main() async {
         .lookupFunction<DartFunc, NativeFunc>('aes_cpu_encrypt_huffman_ffi');
     aesCPUHuffmanDecrypt = cpuDynamicLib
         .lookupFunction<DartFunc, NativeFunc>('aes_cpu_decrypt_huffman_ffi');
+
+    getDeviceDetails();
   }
 
   FlutterWindowClose.setWindowShouldCloseHandler(() async {

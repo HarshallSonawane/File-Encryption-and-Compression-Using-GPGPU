@@ -65,7 +65,6 @@ class ChooseFile extends State<FilePickLive> {
   String filePath = "";
   final bool _isIOS = !kIsWeb && defaultTargetPlatform == TargetPlatform.iOS;
 
-
   Future<void> _getDirectoryPath() async {
     const String confirmButtonText = 'Choose';
     final String? directoryPath = await getDirectoryPath(
@@ -76,7 +75,6 @@ class ChooseFile extends State<FilePickLive> {
       return;
     }
     logger.i("Output Path --> $directoryPath");
-    
   }
 
   void _openFilePicker() async {
@@ -207,7 +205,7 @@ class ChooseFile extends State<FilePickLive> {
   }
 
   bool _isObscured = true;
-    void _toggle() {
+  void _toggle() {
     setState(() {
       _isObscured = !_isObscured;
     });
@@ -217,7 +215,7 @@ class ChooseFile extends State<FilePickLive> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('GPGPU Based File Encryption'),
+        title: const Text('GPGPU Based File Security'),
       ),
       body: Center(
         child: Column(
@@ -228,7 +226,6 @@ class ChooseFile extends State<FilePickLive> {
               children: [
                 ElevatedButton(
                   onPressed: _openFilePicker,
-                  child: const Text('Select File'),
                   style: ElevatedButton.styleFrom(
                     fixedSize: const Size(180, 60),
                     textStyle: const TextStyle(
@@ -240,6 +237,7 @@ class ChooseFile extends State<FilePickLive> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
+                  child: const Text('Select File'),
                 ),
                 const SizedBox(width: 20),
                 ElevatedButton(
@@ -284,7 +282,7 @@ class ChooseFile extends State<FilePickLive> {
             //   style: TextStyle(fontSize: 18),
             // ),
             const SizedBox(height: 20),
-            
+
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 300, vertical: 20),
@@ -293,16 +291,16 @@ class ChooseFile extends State<FilePickLive> {
                 obscureText: _isObscured,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: 'Enter Password:',
+                  labelText: 'Enter Password',
                   hintText: 'Enter Pasword',
                   counterText: '',
-                //   suffixIcon: IconButton(icon: Icon(_isObscured ? Icons.visibility : Icons.visibility_off),
+                  //   suffixIcon: IconButton(icon: Icon(_isObscured ? Icons.visibility : Icons.visibility_off),
                   // onPressed: (){
                   //   setState(() {
                   //     _isObscured = !_isObscured;
                   //   });
                   // },
-                // ),
+                  // ),
                 ),
                 maxLength: 16,
                 minLines: 1,
@@ -329,7 +327,7 @@ class ChooseFile extends State<FilePickLive> {
                   borderRadius: BorderRadius.circular(30),
                 ),
               ),
-              child: const Text('Enter Password'),
+              child: const Text('Secure'),
             ),
             const SizedBox(height: 20),
 

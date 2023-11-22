@@ -22,7 +22,7 @@ class UserChoice extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('User Choice'),
+        title: const Text('Operation Modes'),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

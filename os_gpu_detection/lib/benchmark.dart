@@ -72,9 +72,7 @@ class ChooseFile extends State<FilePickBench> {
       return;
     }
     logger.i("Output Path --> $directoryPath");
-    
   }
-
 
   void _selectPath() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -250,7 +248,7 @@ class ChooseFile extends State<FilePickBench> {
         description.contains("NVIDIA") ? Colors.green : Colors.deepOrange;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('GPGPU Based File Encryption'),
+        title: const Text('Benchmark Mode'),
         backgroundColor: benchmarkingCardColor,
       ),
       body: Center(
