@@ -8,7 +8,7 @@ var logger = Logger(
 );
 
 late String platformInfo, cpuName, cpuCores, cpuThreads, totalMemory, gpuInfo;
-
+late bool isCUDA;
 
 // Typedefs
 typedef DartFunc = Double Function(
