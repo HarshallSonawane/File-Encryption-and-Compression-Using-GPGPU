@@ -60,7 +60,7 @@ class _BarChart extends StatelessWidget {
         text = cpuName;
         break;
       case 1:
-        text = 'GPU';
+        text = gpuInfo;
         break;
       default:
         text = '';
@@ -68,7 +68,7 @@ class _BarChart extends StatelessWidget {
     }
     return SideTitleWidget(
       axisSide: meta.axisSide,
-      space: 1,
+      space: 14,
       child: Text(text, style: style),
     );
   }
@@ -199,8 +199,10 @@ class PlotCharts extends State<BarChartt> {
         title: const Text('Results'),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               SizedBox(width: 10),
               Container(
@@ -259,7 +261,7 @@ class PlotCharts extends State<BarChartt> {
           ),
           SizedBox(
               height:
-          20), // Add spacing between the containers and the TextField
+          20), 
           Container(
             width: 650,
             height: 150,
@@ -278,6 +280,7 @@ class PlotCharts extends State<BarChartt> {
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Column(
+                //mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(

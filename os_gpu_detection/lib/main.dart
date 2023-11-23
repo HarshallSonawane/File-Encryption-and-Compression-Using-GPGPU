@@ -86,7 +86,7 @@ class MyApp extends StatelessWidget {
         title: appName,
         home: Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.red,
+            
             title: const Text(appName),
             actions: <Widget>[
               TextButton(
