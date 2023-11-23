@@ -18,7 +18,7 @@ class _BarChart extends StatelessWidget {
         barGroups: barGroups,
         gridData: const FlGridData(show: true),
         alignment: BarChartAlignment.spaceAround,
-        maxY: timeTakenCPU,
+        maxY: 1000,
       ),
     );
   }
@@ -35,8 +35,9 @@ class _BarChart extends StatelessWidget {
             BarChartRodData rod,
             int rodIndex,
           ) {
+           
             return BarTooltipItem(
-              rod.toY.round().toString(),
+              "${rod.toY} Seconds",
               const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -83,7 +84,7 @@ class _BarChart extends StatelessWidget {
           ),
         ),
         topTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: true),
+          sideTitles: SideTitles(showTitles: false),
         ),
         rightTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
@@ -118,25 +119,29 @@ class _BarChart extends StatelessWidget {
 
 class _BarChartContainer extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 800,
-      height: 700,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 5,
-            blurRadius: 5,
-            offset: Offset(0, 3),
-          ),
-        ],
-      ),
+Widget build(BuildContext context) {
+  return Container(
+    width: 800,
+    height: 700,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(5),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.5),
+          spreadRadius: 5,
+          blurRadius: 5,
+          offset: Offset(0, 3),
+        ),
+      ],
+    ),
+    child: const Padding(
+      padding: EdgeInsets.all(17.0), 
       child: _BarChart(),
-    );
-  }
+    ),
+  );
+}
+
 }
 
 class BarChartt extends StatefulWidget {
@@ -161,7 +166,7 @@ class PlotCharts extends State<BarChartt> {
           return PieChartSectionData(
             color: Colors.deepOrange,
             value: timeTakenCPU,
-            title: '$timeTakenCPU ms',
+            title: '$timeTakenCPU Seconds',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -174,7 +179,7 @@ class PlotCharts extends State<BarChartt> {
           return PieChartSectionData(
             color: Colors.green,
             value: timeTakenGPU,
-            title: '$timeTakenGPU ms',
+            title: '$timeTakenGPU Seconds',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -190,68 +195,82 @@ class PlotCharts extends State<BarChartt> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Results'),
-      ),
-      body: Row(
-        children: <Widget>[
-          SizedBox(width: 10),
-          Container(
-            width: 1000,
-            height: 700,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: _BarChartContainer(),
+Widget build(BuildContext context) {
+  
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text('Results'),
+    ),
+    body: Column(
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            SizedBox(width: 10),
+            Container(
+              width: 1000,
+              height: 700,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: _BarChartContainer(),
+              ),
             ),
-          ),
-          SizedBox(width: 40),
-          Container(
-            width: 450,
-            height: 665,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 5,
-                  blurRadius: 5,
-                  offset: Offset(0, 3),
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: PieChart(
-                PieChartData(
-                  pieTouchData: PieTouchData(
-                    touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                      setState(() {
-                        if (!event.isInterestedForInteractions ||
-                            pieTouchResponse == null ||
-                            pieTouchResponse.touchedSection == null) {
-                          touchedIndex = -1;
-                          return;
-                        }
-                        touchedIndex = pieTouchResponse
-                            .touchedSection!.touchedSectionIndex;
-                      });
-                    },
+            SizedBox(width: 40),
+            Container(
+              width: 450,
+              height: 665,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 5,
+                    offset: Offset(0, 3),
                   ),
-                  borderData: FlBorderData(
-                    show: false,
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: PieChart(
+                  PieChartData(
+                    pieTouchData: PieTouchData(
+                      touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                        setState(() {
+                          if (!event.isInterestedForInteractions ||
+                              pieTouchResponse == null ||
+                              pieTouchResponse.touchedSection == null) {
+                            touchedIndex = -1;
+                            return;
+                          }
+                          touchedIndex = pieTouchResponse
+                              .touchedSection!.touchedSectionIndex;
+                        });
+                      },
+                    ),
+                    borderData: FlBorderData(
+                      show: false,
+                    ),
+                    sectionsSpace: 0,
+                    centerSpaceRadius: 80,
+                    sections: showingSections(),
                   ),
-                  sectionsSpace: 0,
-                  centerSpaceRadius: 80,
-                  sections: showingSections(),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
+          ],
+        ),
+        SizedBox(height: 20), // Add spacing between the containers and the TextField
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+               "Add your Text here  --> Atharv",
+               style: TextStyle(fontSize: 18),
+             ),
+        ),
+      ],
+    ),
+  );
+}
+
 }

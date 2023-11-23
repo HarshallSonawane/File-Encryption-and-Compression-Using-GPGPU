@@ -6,8 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:file_selector/file_selector.dart';
 import "lib.dart";
 
-// late int isClicked = 0;
-// late String btnTxt = "Select File";
 
 class FilePickLive extends StatefulWidget {
   final String title;
@@ -43,7 +41,6 @@ class ChooseFile extends State<FilePickLive> {
     gpu = widget.gpu;
   }
 
-  TextEditingController _passwordController = TextEditingController();
   bool hide = true;
 
   List<String> allowedExtensions = [
@@ -71,7 +68,7 @@ class ChooseFile extends State<FilePickLive> {
       confirmButtonText: confirmButtonText,
     );
     if (directoryPath == null) {
-      // Operation was canceled by the user.
+      
       return;
     }
     logger.i("Output Path --> $directoryPath");
@@ -106,7 +103,7 @@ class ChooseFile extends State<FilePickLive> {
           filePath = result.files.first.path ?? "";
         });
       } else {
-        // Show an alert dialog for inappropriate file extension
+     
         // ignore: use_build_context_synchronously
         showDialog(
           context: context,
@@ -168,7 +165,7 @@ class ChooseFile extends State<FilePickLive> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text("⚠️"),
-            content: const Text("Password Cannot Be Empty !!!"),
+            content: const Text("Enter A Valid Password!"),
             actions: [
               TextButton(
                 onPressed: () {
@@ -190,11 +187,6 @@ class ChooseFile extends State<FilePickLive> {
   }
 
   bool _isObscured = true;
-  void _toggle() {
-    setState(() {
-      _isObscured = !_isObscured;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -274,18 +266,19 @@ class ChooseFile extends State<FilePickLive> {
               child: TextField(
                 controller: keyController,
                 obscureText: _isObscured,
-                decoration: const InputDecoration(
+                decoration:  InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Enter Password',
-                  hintText: 'Enter Pasword',
+                  hintText: 'Keep A Strong Password!!!',
                   counterText: '',
-                  //   suffixIcon: IconButton(icon: Icon(_isObscured ? Icons.visibility : Icons.visibility_off),
-                  // onPressed: (){
-                  //   setState(() {
-                  //     _isObscured = !_isObscured;
-                  //   });
-                  // },
-                  // ),
+                  suffixIcon: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _isObscured = !_isObscured;
+                      });
+                    },
+                    child: Icon(_isObscured ? Icons.visibility : Icons.visibility_off),
+                  )
                 ),
                 maxLength: 16,
                 minLines: 1,
