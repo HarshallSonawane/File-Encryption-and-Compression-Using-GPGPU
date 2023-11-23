@@ -129,6 +129,7 @@ class GPUList extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 for (var i = 0; i < gpuList.length; i++)
+                  
                   Card(
                     elevation: 10,
                     shape: RoundedRectangleBorder(

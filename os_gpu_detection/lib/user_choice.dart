@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:os_gpu_detection/live_mode.dart';
 import 'benchmark.dart';
+import "lib.dart";
 
 class UserChoice extends StatelessWidget {
   final String title;
@@ -8,13 +9,17 @@ class UserChoice extends StatelessWidget {
   final String gpuName;
   int gpuOffset;
 
+  
+
   UserChoice({
     required this.title,
     required this.imagePath,
     required this.gpuName,
     required this.gpuOffset,
-  });
-
+  })
+  {
+    gpuInfo = gpuName;
+  }
   @override
   Widget build(BuildContext context) {
     Color benchmarkingCardColor =

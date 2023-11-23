@@ -9,6 +9,7 @@ var logger = Logger(
 
 late String platformInfo, cpuName, cpuCores, cpuThreads, totalMemory, gpuInfo;
 
+
 // Typedefs
 typedef DartFunc = Double Function(
     Pointer<Utf8> inputPath, Pointer<Utf8> outputPath, Pointer<Utf8> password);
