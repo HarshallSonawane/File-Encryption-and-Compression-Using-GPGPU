@@ -130,7 +130,7 @@ class _BarChartContainer extends StatelessWidget {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 5,
             blurRadius: 5,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -204,7 +204,7 @@ class PlotCharts extends State<BarChartt> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Container(
                 width: 1000,
                 height: 600,
@@ -213,7 +213,7 @@ class PlotCharts extends State<BarChartt> {
                   child: _BarChartContainer(),
                 ),
               ),
-              SizedBox(width: 40),
+              const SizedBox(width: 40),
               Container(
                 width: 450,
                 height: 585,
@@ -225,7 +225,7 @@ class PlotCharts extends State<BarChartt> {
                       color: Colors.grey.withOpacity(0.5),
                       spreadRadius: 5,
                       blurRadius: 5,
-                      offset: Offset(0, 3),
+                      offset: const Offset(0, 3),
                     ),
                   ],
                 ),
@@ -259,12 +259,10 @@ class PlotCharts extends State<BarChartt> {
               ),
             ],
           ),
-          SizedBox(
-              height:
-          20), 
+          const SizedBox(height: 20),
           Container(
-            width: 650,
-            height: 150,
+            // width: 850,
+            // height: 180,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
@@ -273,20 +271,21 @@ class PlotCharts extends State<BarChartt> {
                   color: Colors.grey.withOpacity(0.5),
                   spreadRadius: 5,
                   blurRadius: 7,
-                  offset: Offset(0, 3), // changes the position of the shadow
+                  offset:
+                      const Offset(0, 3), // changes the position of the shadow
                 ),
               ],
             ),
             child: Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(30.0),
               child: Column(
-                //mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     "Operating System: $platformInfo",
                     style: const TextStyle(
-                      fontSize: 15,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                       fontFamily: "Cascadia Code",
                     ),
@@ -294,8 +293,8 @@ class PlotCharts extends State<BarChartt> {
                   const SizedBox(height: 8),
                   Text(
                     "CPU: $cpuName",
-                    style: TextStyle(
-                      fontSize: 15,
+                    style: const TextStyle(
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                       fontFamily: "Cascadia Code",
                     ),
@@ -303,8 +302,8 @@ class PlotCharts extends State<BarChartt> {
                   const SizedBox(height: 8),
                   Text(
                     "Cores : $cpuCores                  Threads: $cpuThreads",
-                    style: TextStyle(
-                      fontSize: 15,
+                    style: const TextStyle(
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                       fontFamily: "Cascadia Code",
                     ),
@@ -312,8 +311,8 @@ class PlotCharts extends State<BarChartt> {
                   const SizedBox(height: 8),
                   Text(
                     "RAM : $totalMemory GB",
-                    style: TextStyle(
-                      fontSize: 15,
+                    style: const TextStyle(
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                       fontFamily: "Cascadia Code",
                     ),
@@ -321,8 +320,8 @@ class PlotCharts extends State<BarChartt> {
                   const SizedBox(height: 8),
                   Text(
                     "GPU : $gpuInfo",
-                    style: TextStyle(
-                      fontSize: 15,
+                    style: const TextStyle(
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                       fontFamily: "Cascadia Code",
                     ),
