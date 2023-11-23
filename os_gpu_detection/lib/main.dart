@@ -45,9 +45,11 @@ void main() async {
 
     // DCAEUG CPU
     if (Platform.isWindows) {
-      cpuLibPath = path.join(Directory.current.path, "ffi_lib", "DCAEUG.dll");
+      cpuLibPath =
+          path.join(Directory.current.path, "ffi_lib", "DCAEUG-CPU.dll");
     } else if (Platform.isLinux) {
-      cpuLibPath = path.join(Directory.current.path, "ffi_lib", "libDCAEUG.so");
+      cpuLibPath =
+          path.join(Directory.current.path, "ffi_lib", "libDCAEUG-CPU.so");
     }
 
     cpuDynamicLib = DynamicLibrary.open(cpuLibPath);
