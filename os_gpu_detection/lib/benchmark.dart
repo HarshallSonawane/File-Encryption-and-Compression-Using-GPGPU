@@ -201,8 +201,8 @@ class ChooseFile extends State<FilePickBench> {
       submittedKey = "0000000000000000";
     });
 
-    var tempDir = outputDirPath;
-    var tempFile = filePath;
+    var tempDir = outputDirPath;  // test/output/
+    filePath; // test/output/CPU/abc.txt.enc
 
     if (Platform.isWindows) {
       tempDir = "$outputDirPath\\CPU\\";
@@ -219,22 +219,25 @@ class ChooseFile extends State<FilePickBench> {
     Directory(tempDir).create(recursive: false);
 
     final inputCPUPath = filePath.toNativeUtf8();
-    if (tempFile.contains("CPU")) {
-      tempFile.replaceAll("CPU", "GPU");
-    } else if (tempFile.contains("GPU")) {
-      tempFile.replaceAll("GPU", "CPU");
+    filePath = filePath.replaceAll("CPU", "GPU");
+
+    if (fileExt == "enc" && gpuInfo.contains("NVIDIA")){
+      filePath = "${filePath.substring(0, filePath.length-4)}.huff.enc";
     }
-    final inputGPUPath = tempFile.toNativeUtf8();
+    final inputGPUPath = filePath.toNativeUtf8();
 
-    logger.e(filePath);
-    logger.e(tempFile);
+    tempDir = "${outputDirPath}CPU/";
+    final outputCPUPath = tempDir.toNativeUtf8();
+    tempDir = "${outputDirPath}GPU/";
+    final outputGPUPath = tempDir.toNativeUtf8();
 
-    final outputCPUPath = outputDirPath.toNativeUtf8();
-    final outputGPUPath = outputDirPath.toNativeUtf8();
+    logger.w(inputGPUPath);
+    logger.w(outputCPUPath);
 
-    // logger.e(outputCPUPath);
-    // logger.e(outputGPUPath);
+    logger.w(inputGPUPath);
+    logger.w(outputCPUPath);
 
+    
     final password = submittedKey.toNativeUtf8();
 
     // if (fileExt != "txt" && fileExt != "enc") {
@@ -269,8 +272,8 @@ class ChooseFile extends State<FilePickBench> {
     // gpuTime = double.parse(gpuTime.toStringAsFixed(2));
 
     calloc.free(password);
-    calloc.free(outputCPUPath);
-    calloc.free(inputCPUPath);
+    // calloc.free(outputCPUPath);
+    // calloc.free(inputCPUPath);
 
     // FOR BENCHMARKING MODE ONLY!!!!!!!
     if (title == "Benchmarking") {
