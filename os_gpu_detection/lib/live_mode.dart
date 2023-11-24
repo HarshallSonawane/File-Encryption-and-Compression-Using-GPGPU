@@ -46,6 +46,7 @@ class ChooseFile extends State<FilePickLive> {
   List<String> allowedExtensions = [
     'jpg',
     'png',
+    'bmp',
     'pdf',
     'txt',
     'mp4',
@@ -83,6 +84,7 @@ class ChooseFile extends State<FilePickLive> {
         allowedExtensions: [
           'jpg',
           'png',
+          'bmp',
           'pdf',
           'txt',
           'mp4',
@@ -145,7 +147,7 @@ class ChooseFile extends State<FilePickLive> {
       } else if (fileExt == "enc" &&
           selectedFileName.contains("txt.huff.enc") &&
           gpuInfo.contains("NVIDIA")) {
-        logger.w("5");
+        logger.w("2");
         operationMode = 2;
         final huffDecPath =
             "${outputDirPath.substring(0, outputDirPath.length - 4)}.huff.enc"
@@ -153,20 +155,20 @@ class ChooseFile extends State<FilePickLive> {
         gpuTime = aesCUDAHuffmanDecrypt(inputPath, huffDecPath, password);
         calloc.free(huffDecPath);
       } else if (fileExt == "enc" && !selectedFileName.contains("txt.enc")) {
-        logger.w("2");
+        logger.w("3");
         operationMode = 2;
         gpuTime = gpuInfo.contains("NVIDIA")
             ? aesCUDADecrypt(inputPath, outputPath, password)
             : aesOpenCLDecrypt(inputPath, outputPath, password, gpuOffset + 1);
       } else if (fileExt == "txt") {
-        logger.w("3");
+        logger.w("4");
         operationMode = 1;
         gpuTime = gpuInfo.contains("NVIDIA")
             ? aesCUDAHuffmanEncrypt(inputPath, outputPath, password)
             : aesOpenCLHuffmanEncrypt(
                 inputPath, outputPath, password, gpuOffset + 1);
       } else if (fileExt == "enc" && selectedFileName.contains("txt.enc")) {
-        logger.w("4");
+        logger.w("5");
         operationMode = 2;
         aesOpenCLHuffmanDecrypt(inputPath, outputPath, password, gpuOffset + 1);
       }
