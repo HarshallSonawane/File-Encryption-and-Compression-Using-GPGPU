@@ -77,14 +77,16 @@ void main() async {
   if (Platform.isWindows) {
     for (var i = 0; i < gpuCount; i++) {
       if (gpuList[i].contains("NVIDIA")) {
-        logger.i("CUDA DLL");
         cudaLibPath =
             path.join(Directory.current.path, "ffi_lib", "DCAEUG-CUDA.dll");
         isCUDA = true;
       } else {
-        logger.i("OpenCL DLL");
         oclLibPath =
             path.join(Directory.current.path, "ffi_lib", "DCAEUG-OpenCL.dll");
+        oclEncryptKernelPath = path.join(
+            Directory.current.path, "ffi_lib\\OpenCL-Kernels", "OCLEncrypt.cl");
+        oclDecryptKernelPath = path.join(
+            Directory.current.path, "ffi_lib\\OpenCL-Kernels", "OCLDecrypt.cl");
         isOpenCL = true;
       }
     }
@@ -97,6 +99,10 @@ void main() async {
       } else {
         oclLibPath =
             path.join(Directory.current.path, "ffi_lib", "libDCAEUG-OpenCL.so");
+        oclEncryptKernelPath = path.join(
+            Directory.current.path, "ffi_lib/OpenCL-Kernels", "OCLEncrypt.cl");
+        oclDecryptKernelPath = path.join(
+            Directory.current.path, "ffi_lib/OpenCL-Kernels", "OCLDecrypt.cl");
         isOpenCL = true;
       }
     }

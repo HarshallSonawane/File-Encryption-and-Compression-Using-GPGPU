@@ -55,6 +55,7 @@ class ChooseFile extends State<FilePickBench> {
     'docx',
     'heif',
     'jpeg',
+    'tif',
     'enc'
   ];
   String fileExt = "";
@@ -95,6 +96,7 @@ class ChooseFile extends State<FilePickBench> {
         'docx',
         'heif',
         'jpeg',
+        'tif',
         'enc'
       ],
     );
@@ -158,6 +160,7 @@ class ChooseFile extends State<FilePickBench> {
         'docx',
         'heif',
         'jpeg',
+        'tif',
         'enc'
       ],
     );
@@ -244,31 +247,31 @@ class ChooseFile extends State<FilePickBench> {
     final outputGPUPath = tempDir.toNativeUtf8();
 
     final password = submittedKey.toNativeUtf8();
+    final oclEncPath = oclEncryptKernelPath.toNativeUtf8();
+    final oclDecPath = oclDecryptKernelPath.toNativeUtf8();
 
     if (fileExt != "txt" && fileExt != "enc") {
       cpuTime = aesCPUEncrypt(inputCPUPath, outputCPUPath, password);
       gpuTime = gpuInfo.contains("NVIDIA")
           ? aesCUDAEncrypt(inputGPUPath, outputGPUPath, password)
-          : aesOpenCLEncrypt(
-              inputGPUPath, outputGPUPath, password, gpuOffset + 1);
+          : aesOpenCLEncrypt(inputGPUPath, outputGPUPath, password, oclEncPath);
     } else if (fileExt == "enc" && !selectedFileName.contains("txt.enc")) {
       cpuTime = aesCPUDecrypt(inputCPUPath, outputCPUPath, password);
       gpuTime = gpuInfo.contains("NVIDIA")
           ? aesCUDADecrypt(inputGPUPath, outputGPUPath, password)
-          : aesOpenCLDecrypt(
-              inputGPUPath, outputGPUPath, password, gpuOffset + 1);
+          : aesOpenCLDecrypt(inputGPUPath, outputGPUPath, password, oclDecPath);
     } else if (fileExt == "txt") {
       cpuTime = aesCPUHuffmanEncrypt(inputCPUPath, outputCPUPath, password);
       gpuTime = gpuInfo.contains("NVIDIA")
           ? aesCUDAHuffmanEncrypt(inputGPUPath, outputGPUPath, password)
           : aesOpenCLHuffmanEncrypt(
-              inputGPUPath, outputGPUPath, password, gpuOffset + 1);
+              inputGPUPath, outputGPUPath, password, oclEncPath);
     } else if (fileExt == "enc" && selectedFileName.contains("txt.enc")) {
       cpuTime = aesCPUHuffmanDecrypt(inputCPUPath, outputCPUPath, password);
       gpuTime = gpuInfo.contains("NVIDIA")
           ? aesCUDAHuffmanDecrypt(inputGPUPath, outputGPUPath, password)
           : aesOpenCLHuffmanDecrypt(
-              inputGPUPath, outputGPUPath, password, gpuOffset + 1);
+              inputGPUPath, outputGPUPath, password, oclDecPath);
     }
 
     cpuTime /= 1000;
@@ -276,6 +279,8 @@ class ChooseFile extends State<FilePickBench> {
     gpuTime /= 1000;
     gpuTime = double.parse(gpuTime.toStringAsFixed(2));
 
+    calloc.free(oclDecPath);
+    calloc.free(oclEncPath);
     calloc.free(password);
     calloc.free(outputGPUPath);
     calloc.free(outputCPUPath);

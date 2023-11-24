@@ -54,6 +54,7 @@ class ChooseFile extends State<FilePickLive> {
     'docx',
     'heif',
     'jpeg',
+    'tif',
     'enc'
   ];
   String fileExt = "";
@@ -92,6 +93,7 @@ class ChooseFile extends State<FilePickLive> {
           'docx',
           'heif',
           'jpeg',
+          'tif',
           'enc'
         ]);
 
@@ -137,13 +139,15 @@ class ChooseFile extends State<FilePickLive> {
       final inputPath = filePath.toNativeUtf8();
       final outputPath = outputDirPath.toNativeUtf8();
       final password = submittedKey.toNativeUtf8();
+      final oclEncPath = oclEncryptKernelPath.toNativeUtf8();
+      final oclDecPath = oclDecryptKernelPath.toNativeUtf8();
 
       if (fileExt != "txt" && fileExt != "enc") {
         logger.w("1");
         operationMode = 1;
         gpuTime = gpuInfo.contains("NVIDIA")
             ? aesCUDAEncrypt(inputPath, outputPath, password)
-            : aesOpenCLEncrypt(inputPath, outputPath, password, gpuOffset + 1);
+            : aesOpenCLEncrypt(inputPath, outputPath, password, oclEncPath);
       } else if (fileExt == "enc" &&
           selectedFileName.contains("txt.huff.enc") &&
           gpuInfo.contains("NVIDIA")) {
@@ -159,18 +163,18 @@ class ChooseFile extends State<FilePickLive> {
         operationMode = 2;
         gpuTime = gpuInfo.contains("NVIDIA")
             ? aesCUDADecrypt(inputPath, outputPath, password)
-            : aesOpenCLDecrypt(inputPath, outputPath, password, gpuOffset + 1);
+            : aesOpenCLDecrypt(inputPath, outputPath, password, oclDecPath);
       } else if (fileExt == "txt") {
         logger.w("4");
         operationMode = 1;
         gpuTime = gpuInfo.contains("NVIDIA")
             ? aesCUDAHuffmanEncrypt(inputPath, outputPath, password)
             : aesOpenCLHuffmanEncrypt(
-                inputPath, outputPath, password, gpuOffset + 1);
+                inputPath, outputPath, password, oclEncPath);
       } else if (fileExt == "enc" && selectedFileName.contains("txt.enc")) {
         logger.w("5");
         operationMode = 2;
-        aesOpenCLHuffmanDecrypt(inputPath, outputPath, password, gpuOffset + 1);
+        aesOpenCLHuffmanDecrypt(inputPath, outputPath, password, oclDecPath);
       }
 
       logger.i("GPU Time : $gpuTime");
@@ -251,6 +255,8 @@ class ChooseFile extends State<FilePickLive> {
       gpuTime /= 1000;
       gpuTime = double.parse(gpuTime.toStringAsFixed(2));
 
+      calloc.free(oclDecPath);
+      calloc.free(oclEncPath);
       calloc.free(password);
       calloc.free(outputPath);
       calloc.free(inputPath);

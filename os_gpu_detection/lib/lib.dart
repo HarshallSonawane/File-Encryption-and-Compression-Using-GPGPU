@@ -13,7 +13,9 @@ late String platformInfo,
     cpuThreads,
     totalMemory,
     gpuInfo,
-    dialogText;
+    dialogText,
+    oclEncryptKernelPath,
+    oclDecryptKernelPath;
 late int operationMode;
 late bool isCUDA, isOpenCL;
 late double cpuTime, gpuTime;
@@ -24,10 +26,13 @@ typedef DartFunc = Double Function(
 typedef NativeFunc = double Function(
     Pointer<Utf8> inputPath, Pointer<Utf8> outputPath, Pointer<Utf8> password);
 
-typedef DartOCLFunc = Double Function(Pointer<Utf8> inputPath,
-    Pointer<Utf8> outputPath, Pointer<Utf8> password, Int32 oclPlatform);
+typedef DartOCLFunc = Double Function(
+    Pointer<Utf8> inputPath,
+    Pointer<Utf8> outputPath,
+    Pointer<Utf8> password,
+    Pointer<Utf8> oclPlatform);
 typedef NativeOCLFunc = double Function(Pointer<Utf8> inputPath,
-    Pointer<Utf8> outputPath, Pointer<Utf8> password, int oclPlatform);
+    Pointer<Utf8> outputPath, Pointer<Utf8> password, Pointer<Utf8> kernelPath);
 
 typedef RunGPUScriptFunc = Void Function();
 typedef RunGPUScript = void Function();
@@ -54,7 +59,7 @@ late double Function(Pointer<Utf8>, Pointer<Utf8>, Pointer<Utf8>)
     aesCUDAHuffmanDecrypt;
 
 // OpenCL
-late double Function(Pointer<Utf8>, Pointer<Utf8>, Pointer<Utf8>, int)
+late double Function(Pointer<Utf8>, Pointer<Utf8>, Pointer<Utf8>, Pointer<Utf8>)
     aesOpenCLEncrypt,
     aesOpenCLDecrypt,
     aesOpenCLHuffmanEncrypt,
