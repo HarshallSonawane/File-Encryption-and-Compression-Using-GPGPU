@@ -24,7 +24,7 @@ void main() async {
       center: true,
       backgroundColor: Colors.transparent,
       skipTaskbar: false,
-      fullScreen: false,
+      fullScreen: true,
       windowButtonVisibility: true,
     );
     windowManager.waitUntilReadyToShow(windowOptions, () async {

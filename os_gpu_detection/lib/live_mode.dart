@@ -147,13 +147,13 @@ class ChooseFile extends State<FilePickLive> {
             ? aesCUDADecrypt(inputPath, outputPath, password)
             : aesOpenCLDecrypt(inputPath, outputPath, password, gpuOffset + 1);
       } else if (fileExt == "txt") {
-        operationMode = 3;
+        operationMode = 1;
         gpuTime = gpuInfo.contains("NVIDIA")
             ? aesCUDAHuffmanEncrypt(inputPath, outputPath, password)
             : aesOpenCLHuffmanEncrypt(
                 inputPath, outputPath, password, gpuOffset + 1);
       } else if (fileExt == "enc" && selectedFileName.contains("txt.enc")) {
-        operationMode = 4;
+        operationMode = 2;
         gpuTime = gpuInfo.contains("NVIDIA")
             ? aesCUDAHuffmanDecrypt(inputPath, outputPath, password)
             : aesOpenCLHuffmanDecrypt(
@@ -169,7 +169,7 @@ class ChooseFile extends State<FilePickLive> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: const Text("❌"),
+                title: const Text("❌😡"),
                 content: const Text(
                     "Tampered File ... Please Check Input File Again !!!"),
                 actions: [
@@ -190,7 +190,7 @@ class ChooseFile extends State<FilePickLive> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: const Text("❌"),
+                title: const Text("❌😡"),
                 content: const Text(
                     "Invalid Password ... Please Check Your Password !!!"),
                 actions: [
@@ -207,18 +207,20 @@ class ChooseFile extends State<FilePickLive> {
           break;
 
         default:
-          // switch (operationMode) {
-          //   case 1:
-          //   appMode = ""
-          //     break;
-          // }
+          switch (operationMode) {
+            case 1:
+              dialogText = "File Encrypted Successfully ...";
+              break;
+            case 2:
+              dialogText = "File Decrypted Successfully ...";
+              break;
+          }
           showDialog(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: const Text("✅"),
-                content: const Text(
-                    "Invalid Password ... Please Check Your Password !!!"),
+                title: const Text("✅😎"),
+                content: Text(dialogText),
                 actions: [
                   TextButton(
                     onPressed: () {
@@ -244,7 +246,7 @@ class ChooseFile extends State<FilePickLive> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text("❌"),
+            title: const Text("❌😡"),
             content: const Text(
                 "Empty Password ... Please Enter A Valid Password !!!"),
             actions: [

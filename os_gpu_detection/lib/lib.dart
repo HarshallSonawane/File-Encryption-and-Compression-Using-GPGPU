@@ -13,7 +13,7 @@ late String platformInfo,
     cpuThreads,
     totalMemory,
     gpuInfo,
-    appMode;
+    dialogText;
 late int operationMode;
 late bool isCUDA, isOpenCL;
 late double cpuTime, gpuTime;

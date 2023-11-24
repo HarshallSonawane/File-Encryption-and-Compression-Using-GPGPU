@@ -201,7 +201,7 @@ class ChooseFile extends State<FilePickBench> {
       submittedKey = "0000000000000000";
     });
 
-    var tempDir = outputDirPath;  // test/output/
+    var tempDir = outputDirPath; // test/output/
     filePath; // test/output/CPU/abc.txt.enc
 
     if (Platform.isWindows) {
@@ -221,59 +221,66 @@ class ChooseFile extends State<FilePickBench> {
     final inputCPUPath = filePath.toNativeUtf8();
     filePath = filePath.replaceAll("CPU", "GPU");
 
-    if (fileExt == "enc" && gpuInfo.contains("NVIDIA")){
-      filePath = "${filePath.substring(0, filePath.length-4)}.huff.enc";
+    if (fileExt == "enc" &&
+        gpuInfo.contains("NVIDIA") &&
+        selectedFileName.contains("txt.enc")) {
+      filePath = "${filePath.substring(0, filePath.length - 4)}.huff.enc";
     }
     final inputGPUPath = filePath.toNativeUtf8();
 
-    tempDir = "${outputDirPath}CPU/";
+    if (Platform.isWindows) {
+      tempDir = "$outputDirPath\\CPU\\";
+    } else if (Platform.isLinux) {
+      tempDir = "$outputDirPath/CPU/";
+    }
+
     final outputCPUPath = tempDir.toNativeUtf8();
-    tempDir = "${outputDirPath}GPU/";
+    if (Platform.isWindows) {
+      tempDir = "$outputDirPath\\GPU\\";
+    } else if (Platform.isLinux) {
+      tempDir = "$outputDirPath/GPU/";
+    }
+
     final outputGPUPath = tempDir.toNativeUtf8();
 
-    logger.w(inputGPUPath);
-    logger.w(outputCPUPath);
-
-    logger.w(inputGPUPath);
-    logger.w(outputCPUPath);
-
-    
     final password = submittedKey.toNativeUtf8();
 
-    // if (fileExt != "txt" && fileExt != "enc") {
-    //   cpuTime = aesCPUEncrypt(inputCPUPath, outputCPUPath, password);
-    //   gpuTime = gpuInfo.contains("NVIDIA")
-    //       ? aesCUDAEncrypt(inputGPUPath, outputGPUPath, password)
-    //       : aesOpenCLEncrypt(
-    //           inputGPUPath, outputGPUPath, password, gpuOffset + 1);
-    // } else if (fileExt == "enc" && !selectedFileName.contains("txt.enc")) {
-    //   cpuTime = aesCPUDecrypt(inputCPUPath, outputCPUPath, password);
-    //   gpuTime = gpuInfo.contains("NVIDIA")
-    //       ? aesCUDADecrypt(inputGPUPath, outputGPUPath, password)
-    //       : aesOpenCLDecrypt(
-    //           inputGPUPath, outputGPUPath, password, gpuOffset + 1);
-    // } else if (fileExt == "txt") {
-    //   cpuTime = aesCPUHuffmanEncrypt(inputCPUPath, outputCPUPath, password);
-    //   gpuTime = gpuInfo.contains("NVIDIA")
-    //       ? aesCUDAHuffmanEncrypt(inputGPUPath, outputGPUPath, password)
-    //       : aesOpenCLHuffmanEncrypt(
-    //           inputGPUPath, outputGPUPath, password, gpuOffset + 1);
-    // } else if (fileExt == "enc" && selectedFileName.contains("txt.enc")) {
-    //   cpuTime = aesCPUHuffmanDecrypt(inputCPUPath, outputCPUPath, password);
-    //   gpuTime = gpuInfo.contains("NVIDIA")
-    //       ? aesCUDAHuffmanDecrypt(inputGPUPath, outputGPUPath, password)
-    //       : aesOpenCLHuffmanDecrypt(
-    //           inputGPUPath, outputGPUPath, password, gpuOffset + 1);
-    // }
+    if (fileExt != "txt" && fileExt != "enc") {
+      cpuTime = aesCPUEncrypt(inputCPUPath, outputCPUPath, password);
+      gpuTime = gpuInfo.contains("NVIDIA")
+          ? aesCUDAEncrypt(inputGPUPath, outputGPUPath, password)
+          : aesOpenCLEncrypt(
+              inputGPUPath, outputGPUPath, password, gpuOffset + 1);
+    } else if (fileExt == "enc" && !selectedFileName.contains("txt.enc")) {
+      cpuTime = aesCPUDecrypt(inputCPUPath, outputCPUPath, password);
+      gpuTime = gpuInfo.contains("NVIDIA")
+          ? aesCUDADecrypt(inputGPUPath, outputGPUPath, password)
+          : aesOpenCLDecrypt(
+              inputGPUPath, outputGPUPath, password, gpuOffset + 1);
+    } else if (fileExt == "txt") {
+      cpuTime = aesCPUHuffmanEncrypt(inputCPUPath, outputCPUPath, password);
+      gpuTime = gpuInfo.contains("NVIDIA")
+          ? aesCUDAHuffmanEncrypt(inputGPUPath, outputGPUPath, password)
+          : aesOpenCLHuffmanEncrypt(
+              inputGPUPath, outputGPUPath, password, gpuOffset + 1);
+    } else if (fileExt == "enc" && selectedFileName.contains("txt.enc")) {
+      cpuTime = aesCPUHuffmanDecrypt(inputCPUPath, outputCPUPath, password);
+      gpuTime = gpuInfo.contains("NVIDIA")
+          ? aesCUDAHuffmanDecrypt(inputGPUPath, outputGPUPath, password)
+          : aesOpenCLHuffmanDecrypt(
+              inputGPUPath, outputGPUPath, password, gpuOffset + 1);
+    }
 
-    // cpuTime /= 1000;
-    // cpuTime = double.parse(cpuTime.toStringAsFixed(2));
-    // gpuTime /= 1000;
-    // gpuTime = double.parse(gpuTime.toStringAsFixed(2));
+    cpuTime /= 1000;
+    cpuTime = double.parse(cpuTime.toStringAsFixed(2));
+    gpuTime /= 1000;
+    gpuTime = double.parse(gpuTime.toStringAsFixed(2));
 
     calloc.free(password);
-    // calloc.free(outputCPUPath);
-    // calloc.free(inputCPUPath);
+    calloc.free(outputGPUPath);
+    calloc.free(outputCPUPath);
+    calloc.free(inputGPUPath);
+    calloc.free(inputCPUPath);
 
     // FOR BENCHMARKING MODE ONLY!!!!!!!
     if (title == "Benchmarking") {
