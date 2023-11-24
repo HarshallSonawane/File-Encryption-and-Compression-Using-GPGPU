@@ -137,19 +137,23 @@ class ChooseFile extends State<FilePickLive> {
       final password = submittedKey.toNativeUtf8();
 
       if (fileExt != "txt" && fileExt != "enc") {
+        operationMode = 1;
         gpuTime = gpuInfo.contains("NVIDIA")
             ? aesCUDAEncrypt(inputPath, outputPath, password)
             : aesOpenCLEncrypt(inputPath, outputPath, password, gpuOffset + 1);
       } else if (fileExt == "enc" && !selectedFileName.contains("txt.enc")) {
+        operationMode = 2;
         gpuTime = gpuInfo.contains("NVIDIA")
             ? aesCUDADecrypt(inputPath, outputPath, password)
             : aesOpenCLDecrypt(inputPath, outputPath, password, gpuOffset + 1);
       } else if (fileExt == "txt") {
+        operationMode = 3;
         gpuTime = gpuInfo.contains("NVIDIA")
             ? aesCUDAHuffmanEncrypt(inputPath, outputPath, password)
             : aesOpenCLHuffmanEncrypt(
                 inputPath, outputPath, password, gpuOffset + 1);
       } else if (fileExt == "enc" && selectedFileName.contains("txt.enc")) {
+        operationMode = 4;
         gpuTime = gpuInfo.contains("NVIDIA")
             ? aesCUDAHuffmanDecrypt(inputPath, outputPath, password)
             : aesOpenCLHuffmanDecrypt(
@@ -187,6 +191,32 @@ class ChooseFile extends State<FilePickLive> {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: const Text("❌"),
+                content: const Text(
+                    "Invalid Password ... Please Check Your Password !!!"),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("Ok"),
+                  ),
+                ],
+              );
+            },
+          );
+          break;
+
+        default:
+          // switch (operationMode) {
+          //   case 1:
+          //   appMode = ""
+          //     break;
+          // }
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text("✅"),
                 content: const Text(
                     "Invalid Password ... Please Check Your Password !!!"),
                 actions: [
@@ -357,7 +387,7 @@ class ChooseFile extends State<FilePickLive> {
                   borderRadius: BorderRadius.circular(30),
                 ),
               ),
-              child: const Text('Secure'),
+              child: const Text('Process'),
             ),
             const SizedBox(height: 20),
 
