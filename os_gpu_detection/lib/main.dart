@@ -44,25 +44,25 @@ void main() async {
     }
 
     // DCAEUG CPU
-    if (Platform.isWindows) {
-      cpuLibPath =
-          path.join(Directory.current.path, "ffi_lib", "DCAEUG-CPU.dll");
-    } else if (Platform.isLinux) {
-      cpuLibPath =
-          path.join(Directory.current.path, "ffi_lib", "libDCAEUG-CPU.so");
-    }
+    // if (Platform.isWindows) {
+    //   cpuLibPath =
+    //       path.join(Directory.current.path, "ffi_lib", "DCAEUG-CPU.dll");
+    // } else if (Platform.isLinux) {
+    //   cpuLibPath =
+    //       path.join(Directory.current.path, "ffi_lib", "libDCAEUG-CPU.so");
+    // }
 
-    cpuDynamicLib = DynamicLibrary.open(cpuLibPath);
+    // cpuDynamicLib = DynamicLibrary.open(cpuLibPath);
 
-    // DCAEUG CPU Native Functions
-    aesCPUEncrypt = cpuDynamicLib
-        .lookupFunction<DartFunc, NativeFunc>('aes_cpu_encrypt_ffi');
-    aesCPUDecrypt = cpuDynamicLib
-        .lookupFunction<DartFunc, NativeFunc>('aes_cpu_decrypt_ffi');
-    aesCPUHuffmanEncrypt = cpuDynamicLib
-        .lookupFunction<DartFunc, NativeFunc>('aes_cpu_encrypt_huffman_ffi');
-    aesCPUHuffmanDecrypt = cpuDynamicLib
-        .lookupFunction<DartFunc, NativeFunc>('aes_cpu_decrypt_huffman_ffi');
+    // // DCAEUG CPU Native Functions
+    // aesCPUEncrypt = cpuDynamicLib
+    //     .lookupFunction<DartFunc, NativeFunc>('aes_cpu_encrypt_ffi');
+    // aesCPUDecrypt = cpuDynamicLib
+    //     .lookupFunction<DartFunc, NativeFunc>('aes_cpu_decrypt_ffi');
+    // aesCPUHuffmanEncrypt = cpuDynamicLib
+    //     .lookupFunction<DartFunc, NativeFunc>('aes_cpu_encrypt_huffman_ffi');
+    // aesCPUHuffmanDecrypt = cpuDynamicLib
+    //     .lookupFunction<DartFunc, NativeFunc>('aes_cpu_decrypt_huffman_ffi');
 
     getDeviceDetails();
   }
@@ -74,65 +74,65 @@ void main() async {
 
   gpuCount = getGPUDetails();
 
-  if (Platform.isWindows) {
-    for (var i = 0; i < gpuCount;) {
-      if (gpuList[i].contains("NVIDIA")) {
-        logger.e("CUDA DLL");
-        cudaLibPath =
-            path.join(Directory.current.path, "ffi_lib", "DCAEUG-CUDA.dll");
-        isCUDA = true;
-        break;
-      } else {
-        logger.e("OpenCL DLL");
-        oclLibPath =
-            path.join(Directory.current.path, "ffi_lib", "DCAEUG-OpenCL.dll");
-        isCUDA = false;
-        break;
-      }
-    }
-  } else if (Platform.isLinux) {
-    for (var i = 0; i < gpuCount;) {
-      if (gpuList[i].contains("NVIDIA")) {
-        cudaLibPath =
-            path.join(Directory.current.path, "ffi_lib", "libDCAEUG-CUDA.so");
-        isCUDA = true;
-        break;
-      } else {
-        oclLibPath =
-            path.join(Directory.current.path, "ffi_lib", "libDCAEUG-OpenCL.so");
-        isCUDA = false;
-        break;
-      }
-    }
-  }
+  // if (Platform.isWindows) {
+  //   for (var i = 0; i < gpuCount;) {
+  //     if (gpuList[i].contains("NVIDIA")) {
+  //       logger.e("CUDA DLL");
+  //       cudaLibPath =
+  //           path.join(Directory.current.path, "ffi_lib", "DCAEUG-CUDA.dll");
+  //       isCUDA = true;
+  //       break;
+  //     } else {
+  //       logger.e("OpenCL DLL");
+  //       oclLibPath =
+  //           path.join(Directory.current.path, "ffi_lib", "DCAEUG-OpenCL.dll");
+  //       isCUDA = false;
+  //       break;
+  //     }
+  //   }
+  // } else if (Platform.isLinux) {
+  //   for (var i = 0; i < gpuCount;) {
+  //     if (gpuList[i].contains("NVIDIA")) {
+  //       cudaLibPath =
+  //           path.join(Directory.current.path, "ffi_lib", "libDCAEUG-CUDA.so");
+  //       isCUDA = true;
+  //       break;
+  //     } else {
+  //       oclLibPath =
+  //           path.join(Directory.current.path, "ffi_lib", "libDCAEUG-OpenCL.so");
+  //       isCUDA = false;
+  //       break;
+  //     }
+  //   }
+  // }
 
-  if (isCUDA) {
-    // DCAEUG CUDA
-    cudaDynamicLib = DynamicLibrary.open(cudaLibPath);
+  // if (isCUDA) {
+  //   // DCAEUG CUDA
+  //   cudaDynamicLib = DynamicLibrary.open(cudaLibPath);
 
-    // DCAEUG CUDA Functions
-    aesCUDAEncrypt = cudaDynamicLib
-        .lookupFunction<DartFunc, NativeFunc>('aes_cuda_encrypt_ffi');
-    aesCUDADecrypt = cudaDynamicLib
-        .lookupFunction<DartFunc, NativeFunc>('aes_cuda_decrypt_ffi');
-    aesCUDAHuffmanEncrypt = cudaDynamicLib
-        .lookupFunction<DartFunc, NativeFunc>('aes_cuda_encrypt_huffman_ffi');
-    aesCUDAHuffmanDecrypt = cudaDynamicLib
-        .lookupFunction<DartFunc, NativeFunc>('aes_cuda_decrypt_huffman_ffi');
-  } else {
-    // DCAEUG OpenCL
-    oclDynamicLib = DynamicLibrary.open(oclLibPath);
+  //   // DCAEUG CUDA Functions
+  //   aesCUDAEncrypt = cudaDynamicLib
+  //       .lookupFunction<DartFunc, NativeFunc>('aes_cuda_encrypt_ffi');
+  //   aesCUDADecrypt = cudaDynamicLib
+  //       .lookupFunction<DartFunc, NativeFunc>('aes_cuda_decrypt_ffi');
+  //   aesCUDAHuffmanEncrypt = cudaDynamicLib
+  //       .lookupFunction<DartFunc, NativeFunc>('aes_cuda_encrypt_huffman_ffi');
+  //   aesCUDAHuffmanDecrypt = cudaDynamicLib
+  //       .lookupFunction<DartFunc, NativeFunc>('aes_cuda_decrypt_huffman_ffi');
+  // } else {
+  //   // DCAEUG OpenCL
+  //   oclDynamicLib = DynamicLibrary.open(oclLibPath);
 
-    // DCAEUG OpenCL Functions
-    aesOpenCLEncrypt = oclDynamicLib
-        .lookupFunction<DartFunc, NativeFunc>('aes_ocl_encrypt_ffi');
-    aesOpenCLDecrypt = oclDynamicLib
-        .lookupFunction<DartFunc, NativeFunc>('aes_ocl_decrypt_ffi');
-    aesOpenCLHuffmanEncrypt = oclDynamicLib
-        .lookupFunction<DartFunc, NativeFunc>('aes_ocl_encrypt_huffman_ffi');
-    aesOpenCLHuffmanDecrypt = oclDynamicLib
-        .lookupFunction<DartFunc, NativeFunc>('aes_ocl_decrypt_huffman_ffi');
-  }
+  //   // DCAEUG OpenCL Functions
+  //   aesOpenCLEncrypt = oclDynamicLib
+  //       .lookupFunction<DartFunc, NativeFunc>('aes_ocl_encrypt_ffi');
+  //   aesOpenCLDecrypt = oclDynamicLib
+  //       .lookupFunction<DartFunc, NativeFunc>('aes_ocl_decrypt_ffi');
+  //   aesOpenCLHuffmanEncrypt = oclDynamicLib
+  //       .lookupFunction<DartFunc, NativeFunc>('aes_ocl_encrypt_huffman_ffi');
+  //   aesOpenCLHuffmanDecrypt = oclDynamicLib
+  //       .lookupFunction<DartFunc, NativeFunc>('aes_ocl_decrypt_huffman_ffi');
+  // }
 
   runApp(const MyApp());
 }

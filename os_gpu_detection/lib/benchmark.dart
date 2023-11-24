@@ -1,7 +1,7 @@
 import 'package:ffi/ffi.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
-import 'package:os_gpu_detection/results.dart';
+import 'package:os_gpu_detection/results/results.dart';
 import 'package:path/path.dart' as path;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
