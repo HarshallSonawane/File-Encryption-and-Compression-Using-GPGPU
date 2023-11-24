@@ -13,11 +13,11 @@ late String platformInfo,
     cpuThreads,
     totalMemory,
     gpuInfo,
-    dialogText,
-    oclEncryptKernelPath,
-    oclDecryptKernelPath;
+    dialogText;
+
+String oclEncryptKernelPath = "", oclDecryptKernelPath = "";
 late int operationMode;
-late bool isCUDA, isOpenCL;
+bool isCUDA = false, isOpenCL = false;
 late double cpuTime, gpuTime;
 
 // Typedefs
