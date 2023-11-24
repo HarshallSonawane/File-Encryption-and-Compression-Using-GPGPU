@@ -1,11 +1,11 @@
 import 'package:ffi/ffi.dart';
+import 'package:os_gpu_detection/main.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:file_selector/file_selector.dart';
 import "lib.dart";
-
 
 class FilePickLive extends StatefulWidget {
   final String title;
@@ -60,6 +60,7 @@ class ChooseFile extends State<FilePickLive> {
   TextEditingController keyController = TextEditingController();
   String submittedKey = "";
   String filePath = "";
+  String outputDirPath = "";
   final bool _isIOS = !kIsWeb && defaultTargetPlatform == TargetPlatform.iOS;
 
   Future<void> _getDirectoryPath() async {
@@ -68,10 +69,10 @@ class ChooseFile extends State<FilePickLive> {
       confirmButtonText: confirmButtonText,
     );
     if (directoryPath == null) {
-      
       return;
     }
     logger.i("Output Path --> $directoryPath");
+    outputDirPath = directoryPath;
   }
 
   void _openFilePicker() async {
@@ -103,13 +104,12 @@ class ChooseFile extends State<FilePickLive> {
           filePath = result.files.first.path ?? "";
         });
       } else {
-     
         // ignore: use_build_context_synchronously
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: const Text("ERROR ⚠️"),
+              title: const Text("ERROR ❌"),
               content: const Text("Please select an appropriate file."),
               actions: [
                 TextButton(
@@ -132,40 +132,91 @@ class ChooseFile extends State<FilePickLive> {
         submittedKey = keyController.text;
       });
 
-      // final inputPath = filePath.toNativeUtf8();
-      // final outputPath = trimmedPath.toNativeUtf8();
-      // final password = submittedKey.toNativeUtf8();
+      final inputPath = filePath.toNativeUtf8();
+      final outputPath = outputDirPath.toNativeUtf8();
+      final password = submittedKey.toNativeUtf8();
 
-      // if (fileExt != "txt" && fileExt != "enc") {
-      //   aesCPUEncryptTime = double.parse(
-      //       aesCPUEncrypt(inputPath, outputPath, password).toStringAsFixed(2));
-      //   print("AES Encryption Time = $aesCPUEncryptTime ms");
-      // } else if (fileExt == "txt") {
-      //   aesCPUHuffmanEncryptTime = double.parse(
-      //       aesCPUHuffmanEncrypt(inputPath, outputPath, password)
-      //           .toStringAsFixed(2));
-      //   print("AES + Huffman Encryption Time = $aesCPUHuffmanEncryptTime ms");
-      // } else if (fileExt == "enc" && !selectedFileName.contains("txt.enc")) {
-      //   aesCPUDecryptTime = double.parse(
-      //       aesCPUDecrypt(inputPath, outputPath, password).toStringAsFixed(2));
-      //   print("AES Decryption Time = $aesCPUEncryptTime ms");
-      // } else if (fileExt == "enc" && selectedFileName.contains("txt.enc")) {
-      //   aesCPUHuffmanDecryptTime = double.parse(
-      //       aesCPUHuffmanDecrypt(inputPath, outputPath, password)
-      //           .toStringAsFixed(2));
-      //   print("AES + Huffman Decryption Time = $aesCPUHuffmanDecryptTime ms");
-      // }
+      if (fileExt != "txt" && fileExt != "enc") {
+        gpuTime = gpuInfo.contains("NVIDIA")
+            ? aesCUDAEncrypt(inputPath, outputPath, password)
+            : aesOpenCLEncrypt(inputPath, outputPath, password, gpuOffset + 1);
+      } else if (fileExt == "enc" && !selectedFileName.contains("txt.enc")) {
+        gpuTime = gpuInfo.contains("NVIDIA")
+            ? aesCUDADecrypt(inputPath, outputPath, password)
+            : aesOpenCLDecrypt(inputPath, outputPath, password, gpuOffset + 1);
+      } else if (fileExt == "txt") {
+        gpuTime = gpuInfo.contains("NVIDIA")
+            ? aesCUDAHuffmanEncrypt(inputPath, outputPath, password)
+            : aesOpenCLHuffmanEncrypt(
+                inputPath, outputPath, password, gpuOffset + 1);
+      } else if (fileExt == "enc" && selectedFileName.contains("txt.enc")) {
+        gpuTime = gpuInfo.contains("NVIDIA")
+            ? aesCUDAHuffmanDecrypt(inputPath, outputPath, password)
+            : aesOpenCLHuffmanDecrypt(
+                inputPath, outputPath, password, gpuOffset + 1);
+      }
 
-      // calloc.free(password);
-      // calloc.free(outputPath);
-      // calloc.free(inputPath);
+      logger.i("GPU Time : $gpuTime");
+
+      switch (gpuTime.toInt()) {
+        case -1:
+        case -3:
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text("❌"),
+                content: const Text(
+                    "Tampered File ... Please Check Input File Again !!!"),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("Ok"),
+                  ),
+                ],
+              );
+            },
+          );
+          break;
+
+        case -2:
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text("❌"),
+                content: const Text(
+                    "Invalid Password ... Please Check Your Password !!!"),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("Ok"),
+                  ),
+                ],
+              );
+            },
+          );
+          break;
+      }
+
+      gpuTime /= 1000;
+      gpuTime = double.parse(gpuTime.toStringAsFixed(2));
+
+      calloc.free(password);
+      calloc.free(outputPath);
+      calloc.free(inputPath);
     } else {
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text("⚠️"),
-            content: const Text("Enter A Valid Password!"),
+            title: const Text("❌"),
+            content: const Text(
+                "Empty Password ... Please Enter A Valid Password !!!"),
             actions: [
               TextButton(
                 onPressed: () {
@@ -266,20 +317,21 @@ class ChooseFile extends State<FilePickLive> {
               child: TextField(
                 controller: keyController,
                 obscureText: _isObscured,
-                decoration:  InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Enter Password',
-                  hintText: 'Keep A Strong Password!!!',
-                  counterText: '',
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _isObscured = !_isObscured;
-                      });
-                    },
-                    child: Icon(_isObscured ? Icons.visibility : Icons.visibility_off),
-                  )
-                ),
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Enter Password',
+                    hintText: 'Keep A Strong Password !!!',
+                    counterText: '',
+                    suffixIcon: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _isObscured = !_isObscured;
+                        });
+                      },
+                      child: Icon(_isObscured
+                          ? Icons.visibility
+                          : Icons.visibility_off),
+                    )),
                 maxLength: 16,
                 minLines: 1,
               ),

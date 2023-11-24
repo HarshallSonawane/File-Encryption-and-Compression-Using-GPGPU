@@ -4,11 +4,13 @@ import 'hw_info_card.dart';
 import 'pie_chart.dart';
 import 'bar_chart.dart';
 
-double timeTakenCPU = 641.3;
-double timeTakenGPU = 62.30;
-
 class BarChartt extends StatefulWidget {
-  const BarChartt({super.key});
+  final double timeTakenCPU;
+  final double timeTakenGPU;
+
+  const BarChartt(
+      {Key? key, required this.timeTakenCPU, required this.timeTakenGPU})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => PlotCharts();
@@ -28,8 +30,8 @@ class PlotCharts extends State<BarChartt> {
         case 0:
           return PieChartSectionData(
             color: Colors.deepOrange,
-            value: timeTakenCPU,
-            title: '$timeTakenCPU Seconds',
+            value: widget.timeTakenCPU,
+            title: '${widget.timeTakenCPU} Seconds',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -41,8 +43,8 @@ class PlotCharts extends State<BarChartt> {
         case 1:
           return PieChartSectionData(
             color: Colors.green,
-            value: timeTakenGPU,
-            title: '$timeTakenGPU Seconds',
+            value: widget.timeTakenGPU,
+            title: '${widget.timeTakenGPU} Seconds',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -109,7 +111,9 @@ class PlotCharts extends State<BarChartt> {
                       ),
                     ],
                   ),
-                  child: InfoBarChart(),
+                  child: InfoBarChart(
+                      timeTakenCPU: widget.timeTakenCPU,
+                      timeTakenGPU: widget.timeTakenGPU),
                 ),
                 Container(
                   width: 450,
@@ -127,8 +131,8 @@ class PlotCharts extends State<BarChartt> {
                     ],
                   ),
                   child: InfoPieChart(
-                    timeTakenCPU: timeTakenCPU,
-                    timeTakenGPU: timeTakenGPU,
+                    timeTakenCPU: widget.timeTakenCPU,
+                    timeTakenGPU: widget.timeTakenGPU,
                   ),
                 ),
               ],

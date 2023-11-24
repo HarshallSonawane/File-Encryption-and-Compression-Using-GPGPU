@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:ffi/ffi.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
+import 'package:os_gpu_detection/main.dart';
 import 'package:os_gpu_detection/results/results.dart';
 import 'package:path/path.dart' as path;
 import 'package:file_picker/file_picker.dart';
@@ -51,7 +54,8 @@ class ChooseFile extends State<FilePickBench> {
     'mov',
     'docx',
     'heif',
-    'jpeg'
+    'jpeg',
+    'enc'
   ];
   String fileExt = "";
   String selectedFileName = "";
@@ -60,6 +64,7 @@ class ChooseFile extends State<FilePickBench> {
   String filePath = "";
   String outputFilePath = "";
   String trimmedPath = "";
+  String outputDirPath = "";
   final bool _isIOS = !kIsWeb && defaultTargetPlatform == TargetPlatform.iOS;
 
   Future<void> _getDirectoryPath() async {
@@ -72,6 +77,7 @@ class ChooseFile extends State<FilePickBench> {
       return;
     }
     logger.i("Output Path --> $directoryPath");
+    outputDirPath = directoryPath;
   }
 
   void _selectPath() async {
@@ -89,6 +95,7 @@ class ChooseFile extends State<FilePickBench> {
         'docx',
         'heif',
         'jpeg',
+        'enc'
       ],
     );
 
@@ -150,7 +157,8 @@ class ChooseFile extends State<FilePickBench> {
         'mov',
         'docx',
         'heif',
-        'jpeg'
+        'jpeg',
+        'enc'
       ],
     );
 
@@ -171,7 +179,7 @@ class ChooseFile extends State<FilePickBench> {
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text("ERROR ⚠️"),
-              content: const Text("Please select an appropriate file."),
+              content: const Text("Please Select an appropriate file"),
               actions: [
                 TextButton(
                   onPressed: () {
@@ -193,45 +201,83 @@ class ChooseFile extends State<FilePickBench> {
       submittedKey = "0000000000000000";
     });
 
-    // final inputPath = filePath.toNativeUtf8();
-    // final outputPath = trimmedPath.toNativeUtf8();
-    // final password = submittedKey.toNativeUtf8();
+    var tempDir = outputDirPath;
+    var tempFile = filePath;
+
+    if (Platform.isWindows) {
+      tempDir = "$outputDirPath\\CPU\\";
+    } else if (Platform.isLinux) {
+      tempDir = "$outputDirPath/CPU/";
+    }
+    Directory(tempDir).create(recursive: false);
+
+    if (Platform.isWindows) {
+      tempDir = "$outputDirPath\\GPU\\";
+    } else if (Platform.isLinux) {
+      tempDir = "$outputDirPath/GPU/";
+    }
+    Directory(tempDir).create(recursive: false);
+
+    final inputCPUPath = filePath.toNativeUtf8();
+    if (tempFile.contains("CPU")) {
+      tempFile.replaceAll("CPU", "GPU");
+    } else if (tempFile.contains("GPU")) {
+      tempFile.replaceAll("GPU", "CPU");
+    }
+    final inputGPUPath = tempFile.toNativeUtf8();
+
+    logger.e(filePath);
+    logger.e(tempFile);
+
+    final outputCPUPath = outputDirPath.toNativeUtf8();
+    final outputGPUPath = outputDirPath.toNativeUtf8();
+
+    // logger.e(outputCPUPath);
+    // logger.e(outputGPUPath);
+
+    final password = submittedKey.toNativeUtf8();
 
     // if (fileExt != "txt" && fileExt != "enc") {
-    //   aesCPUEncryptTime = double.parse(
-    //       aesCPUEncrypt(inputPath, outputPath, password).toStringAsFixed(2));
-    //   logger.i("AES Encryption Time = $aesCPUEncryptTime ms");
-    // } else if (fileExt == "txt") {
-    //   aesCPUHuffmanEncryptTime = double.parse(
-    //       aesCPUHuffmanEncrypt(inputPath, outputPath, password)
-    //           .toStringAsFixed(2));
-    //   logger.i("AES + Huffman Encryption Time = $aesCPUHuffmanEncryptTime ms");
+    //   cpuTime = aesCPUEncrypt(inputCPUPath, outputCPUPath, password);
+    //   gpuTime = gpuInfo.contains("NVIDIA")
+    //       ? aesCUDAEncrypt(inputGPUPath, outputGPUPath, password)
+    //       : aesOpenCLEncrypt(
+    //           inputGPUPath, outputGPUPath, password, gpuOffset + 1);
     // } else if (fileExt == "enc" && !selectedFileName.contains("txt.enc")) {
-    //   aesCPUDecryptTime = double.parse(
-    //       aesCPUDecrypt(inputPath, outputPath, password).toStringAsFixed(2));
-    //   logger.i("AES Decryption Time = $aesCPUEncryptTime ms");
+    //   cpuTime = aesCPUDecrypt(inputCPUPath, outputCPUPath, password);
+    //   gpuTime = gpuInfo.contains("NVIDIA")
+    //       ? aesCUDADecrypt(inputGPUPath, outputGPUPath, password)
+    //       : aesOpenCLDecrypt(
+    //           inputGPUPath, outputGPUPath, password, gpuOffset + 1);
+    // } else if (fileExt == "txt") {
+    //   cpuTime = aesCPUHuffmanEncrypt(inputCPUPath, outputCPUPath, password);
+    //   gpuTime = gpuInfo.contains("NVIDIA")
+    //       ? aesCUDAHuffmanEncrypt(inputGPUPath, outputGPUPath, password)
+    //       : aesOpenCLHuffmanEncrypt(
+    //           inputGPUPath, outputGPUPath, password, gpuOffset + 1);
     // } else if (fileExt == "enc" && selectedFileName.contains("txt.enc")) {
-    //   aesCPUHuffmanDecryptTime = double.parse(
-    //       aesCPUHuffmanDecrypt(inputPath, outputPath, password)
-    //           .toStringAsFixed(2));
-    //   logger.i("AES + Huffman Decryption Time = $aesCPUHuffmanDecryptTime ms");
+    //   cpuTime = aesCPUHuffmanDecrypt(inputCPUPath, outputCPUPath, password);
+    //   gpuTime = gpuInfo.contains("NVIDIA")
+    //       ? aesCUDAHuffmanDecrypt(inputGPUPath, outputGPUPath, password)
+    //       : aesOpenCLHuffmanDecrypt(
+    //           inputGPUPath, outputGPUPath, password, gpuOffset + 1);
     // }
 
-    // calloc.free(password);
-    // calloc.free(outputPath);
-    // calloc.free(inputPath);
+    // cpuTime /= 1000;
+    // cpuTime = double.parse(cpuTime.toStringAsFixed(2));
+    // gpuTime /= 1000;
+    // gpuTime = double.parse(gpuTime.toStringAsFixed(2));
+
+    calloc.free(password);
+    calloc.free(outputCPUPath);
+    calloc.free(inputCPUPath);
 
     // FOR BENCHMARKING MODE ONLY!!!!!!!
     if (title == "Benchmarking") {
       Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => const BarChartt()
-            //   selectedFileName: selectedFileName,
-            //   fileExt: fileExt,
-            //   filePath: filePath,
-            //   submittedKey: submittedKey,
-            //   outputFilePath: "none",
-            // ),
-            ),
+        MaterialPageRoute(
+            builder: (context) =>
+                BarChartt(timeTakenCPU: cpuTime, timeTakenGPU: gpuTime)),
       );
     }
   }

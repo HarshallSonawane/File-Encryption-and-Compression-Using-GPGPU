@@ -1,23 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:os_gpu_detection/lib.dart';
-import 'package:os_gpu_detection/results/results.dart';
 
+class InfoBarChart extends StatelessWidget {
+  final double timeTakenCPU;
+  final double timeTakenGPU;
 
-class _BarChart extends StatelessWidget {
-  const _BarChart();
+  const InfoBarChart(
+      {Key? key, required this.timeTakenCPU, required this.timeTakenGPU})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BarChart(
-      BarChartData(
-        barTouchData: barTouchData,
-        titlesData: titlesData,
-        borderData: borderData,
-        barGroups: barGroups,
-        gridData: const FlGridData(show: true),
-        alignment: BarChartAlignment.spaceAround,
-        maxY: 1000,
+    return Padding(
+      padding: const EdgeInsets.all(30.0),
+      child: BarChart(
+        BarChartData(
+          barTouchData: barTouchData,
+          titlesData: titlesData,
+          borderData: borderData,
+          barGroups: barGroups,
+          gridData: const FlGridData(show: true),
+          alignment: BarChartAlignment.spaceAround,
+          maxY: timeTakenCPU,
+        ),
       ),
     );
   }
@@ -115,12 +121,22 @@ class _BarChart extends StatelessWidget {
       ];
 }
 
-class InfoBarChart extends StatelessWidget {
-  @override
-  Widget build(BuildContext context){
-    return const Padding(
-      padding: EdgeInsets.all(30.0),
-      child: _BarChart(),
-    );
-  }
-}
+// class InfoBarChart extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Padding(
+//       padding: EdgeInsets.all(30.0),
+//       child: _BarChart(),
+//     );
+//   }
+// }
+
+// class InfoBarChart extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Padding(
+//       padding: EdgeInsets.all(30.0),
+//       child: _BarChart(),
+//     );
+//   }
+// }

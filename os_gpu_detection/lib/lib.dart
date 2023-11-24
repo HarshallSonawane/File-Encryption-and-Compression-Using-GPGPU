@@ -7,14 +7,26 @@ var logger = Logger(
   printer: PrettyPrinter(),
 );
 
-late String platformInfo, cpuName, cpuCores, cpuThreads, totalMemory, gpuInfo;
-late bool isCUDA;
+late String platformInfo,
+    cpuName,
+    cpuCores,
+    cpuThreads,
+    totalMemory,
+    gpuInfo,
+    operationMode;
+late bool isCUDA, isOpenCL;
+late double cpuTime, gpuTime;
 
 // Typedefs
 typedef DartFunc = Double Function(
     Pointer<Utf8> inputPath, Pointer<Utf8> outputPath, Pointer<Utf8> password);
 typedef NativeFunc = double Function(
     Pointer<Utf8> inputPath, Pointer<Utf8> outputPath, Pointer<Utf8> password);
+
+typedef DartOCLFunc = Double Function(Pointer<Utf8> inputPath,
+    Pointer<Utf8> outputPath, Pointer<Utf8> password, Int32 oclPlatform);
+typedef NativeOCLFunc = double Function(Pointer<Utf8> inputPath,
+    Pointer<Utf8> outputPath, Pointer<Utf8> password, int oclPlatform);
 
 typedef RunGPUScriptFunc = Void Function();
 typedef RunGPUScript = void Function();
@@ -33,11 +45,6 @@ late double Function(Pointer<Utf8>, Pointer<Utf8>, Pointer<Utf8>) aesCPUEncrypt,
     aesCPUHuffmanEncrypt,
     aesCPUHuffmanDecrypt;
 
-late double aesCPUEncryptTime,
-    aesCPUDecryptTime,
-    aesCPUHuffmanEncryptTime,
-    aesCPUHuffmanDecryptTime;
-
 // CUDA
 late double Function(Pointer<Utf8>, Pointer<Utf8>, Pointer<Utf8>)
     aesCUDAEncrypt,
@@ -45,21 +52,9 @@ late double Function(Pointer<Utf8>, Pointer<Utf8>, Pointer<Utf8>)
     aesCUDAHuffmanEncrypt,
     aesCUDAHuffmanDecrypt;
 
-late double aesCUDAEncryptTime,
-    aesCUDADecryptTime,
-    aesCUDAHuffmanEncryptTime,
-    aesCUDAHuffmanDecryptTime;
-
 // OpenCL
-late double Function(Pointer<Utf8>, Pointer<Utf8>, Pointer<Utf8>)
+late double Function(Pointer<Utf8>, Pointer<Utf8>, Pointer<Utf8>, int)
     aesOpenCLEncrypt,
     aesOpenCLDecrypt,
     aesOpenCLHuffmanEncrypt,
     aesOpenCLHuffmanDecrypt;
-
-late double aesOpenCLEncryptTime,
-    aesOpenCLDecryptTime,
-    aesOpenCLHuffmanEncryptTime,
-    aesOpenCLHuffmanDecryptTime;
-
-late int fileMode;
