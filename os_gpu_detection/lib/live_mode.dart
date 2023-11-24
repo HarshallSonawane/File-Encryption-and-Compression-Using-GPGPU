@@ -109,7 +109,7 @@ class ChooseFile extends State<FilePickLive> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: const Text("ERROR ❌"),
+              title: const Text("😑❌"),
               content: const Text("Please select an appropriate file."),
               actions: [
                 TextButton(
@@ -137,27 +137,38 @@ class ChooseFile extends State<FilePickLive> {
       final password = submittedKey.toNativeUtf8();
 
       if (fileExt != "txt" && fileExt != "enc") {
+        logger.w("1");
         operationMode = 1;
         gpuTime = gpuInfo.contains("NVIDIA")
             ? aesCUDAEncrypt(inputPath, outputPath, password)
             : aesOpenCLEncrypt(inputPath, outputPath, password, gpuOffset + 1);
+      } else if (fileExt == "enc" &&
+          selectedFileName.contains("txt.huff.enc") &&
+          gpuInfo.contains("NVIDIA")) {
+        logger.w("5");
+        operationMode = 2;
+        final huffDecPath =
+            "${outputDirPath.substring(0, outputDirPath.length - 4)}.huff.enc"
+                .toNativeUtf8();
+        gpuTime = aesCUDAHuffmanDecrypt(inputPath, huffDecPath, password);
+        calloc.free(huffDecPath);
       } else if (fileExt == "enc" && !selectedFileName.contains("txt.enc")) {
+        logger.w("2");
         operationMode = 2;
         gpuTime = gpuInfo.contains("NVIDIA")
             ? aesCUDADecrypt(inputPath, outputPath, password)
             : aesOpenCLDecrypt(inputPath, outputPath, password, gpuOffset + 1);
       } else if (fileExt == "txt") {
+        logger.w("3");
         operationMode = 1;
         gpuTime = gpuInfo.contains("NVIDIA")
             ? aesCUDAHuffmanEncrypt(inputPath, outputPath, password)
             : aesOpenCLHuffmanEncrypt(
                 inputPath, outputPath, password, gpuOffset + 1);
       } else if (fileExt == "enc" && selectedFileName.contains("txt.enc")) {
+        logger.w("4");
         operationMode = 2;
-        gpuTime = gpuInfo.contains("NVIDIA")
-            ? aesCUDAHuffmanDecrypt(inputPath, outputPath, password)
-            : aesOpenCLHuffmanDecrypt(
-                inputPath, outputPath, password, gpuOffset + 1);
+        aesOpenCLHuffmanDecrypt(inputPath, outputPath, password, gpuOffset + 1);
       }
 
       logger.i("GPU Time : $gpuTime");
@@ -169,7 +180,7 @@ class ChooseFile extends State<FilePickLive> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: const Text("❌😡"),
+                title: const Text("😡❌"),
                 content: const Text(
                     "Tampered File ... Please Check Input File Again !!!"),
                 actions: [
@@ -190,7 +201,7 @@ class ChooseFile extends State<FilePickLive> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: const Text("❌😡"),
+                title: const Text("😟❌"),
                 content: const Text(
                     "Invalid Password ... Please Check Your Password !!!"),
                 actions: [
@@ -219,7 +230,7 @@ class ChooseFile extends State<FilePickLive> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: const Text("✅😎"),
+                title: const Text("😄✅"),
                 content: Text(dialogText),
                 actions: [
                   TextButton(
@@ -246,7 +257,7 @@ class ChooseFile extends State<FilePickLive> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text("❌😡"),
+            title: const Text("😑❌"),
             content: const Text(
                 "Empty Password ... Please Enter A Valid Password !!!"),
             actions: [
